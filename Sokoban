@@ -1,0 +1,7 @@
+public class Sokoban{
+
+    public Sokoban{
+        System.out.println("fd");
+
+    }
+}
