@@ -12,6 +12,31 @@ public class premiere extends JPanel {
     public static void main(String[] args) {
 
 
+
+        /*
+
+
+         super("titre de l'application");
+
+        WindowListener l = new WindowAdapter() {
+            public void windowClosing(WindowEvent e){
+                System.exit(0);
+            }
+        };
+
+        addWindowListener(l);
+        setSize(200,100);
+        setVisible(true);
+    }
+
+    public static void main(String [] args){
+        JFrame frame = new swing1();
+    }
+
+
+
+         */
+
         Plateau monPlateau = new Plateau();
         vuePlateau maVuePlateau = new vuePlateau();
         JFrame frame = new JFrame("Sokoban");

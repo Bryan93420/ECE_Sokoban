@@ -57,9 +57,9 @@ String arg;
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new test();
-    }
+//    public static void main(String[] args) {
+//        JFrame frame = new test();
+//    }
 
 
 

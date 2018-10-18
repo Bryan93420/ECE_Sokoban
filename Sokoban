@@ -1,3 +1,35 @@
+import java.io.*;
+
 public class Sokoban {
 
-}
+    swing1 oka;
+
+//    public static void main(String[] args) {
+
+        /*
+
+
+        oka = new swing1();
+
+        // Java Program to illustrate reading from FileReader
+        // using BufferedReader
+        // We need to provide file path as the parameter:
+        // double backquote is to avoid compiler interpret words
+        // like \test as \t (ie. as a escape sequence)
+        File file = new File("C:\\Users\\Steph\\IdeaProjects\\ECE_Sokoban\\niveaux\\niveau_1.txt");
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            String st;
+            while ((st = br.readLine()) != null)
+                System.out.println(st);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+*/
+
+//}
