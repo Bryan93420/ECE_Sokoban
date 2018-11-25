@@ -43,12 +43,12 @@ public class VuePlateau extends FileNotFoundException{
             String data;
             while ((data = bis.readLine()) != null) {
 
-                for (String chaine : data.split("\\s+")){
-                    Case = Integer.valueOf(chaine);
+                //for (String chaine : data.split("\\s+")){
+                   //Case = Integer.valueOf(chaine);
                     //tableau.add(Case);
                     System.out.println(data);
                     bis.close();
-                }
+              //  }
                 //Case.add();
 
 
