@@ -5,7 +5,7 @@ public class Main {
         Level level = new Level();
         Plateau p = new Plateau(level);
 
-        p.initPlateau();
+        level.initLevel(p);
         p.print();
 
 

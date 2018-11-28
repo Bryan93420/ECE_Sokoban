@@ -23,17 +23,18 @@ public class Plateau {
     private int lignePerso;
     private int colonnePerso;
 
+
     private boolean mur = false;
     private boolean caisse_goal = false;
     private boolean goal = false;
+
+
+    public static int CASE;
 
     public static final int SOL = 0;
     public static final int MUR = 1;
     public static final int CAISSE = 2;
     public static final int CAISSE_PLACEE = 3;
-
-
-
     public static final int GOAL = 4;
     public static final int PERSO = 5;
     public static final int PERSO_GOAL = 6;
@@ -50,30 +51,30 @@ public class Plateau {
         this.l = l;
     }
 
-    public void initPlateau(){
+    /*public void initPlateau(){
         try{
             nbPas = 0;
             nbPousses = 0;
-            String levelFile = "Plateau.txt";
-            Level l = Level.getInstance();
-            l.initLevel(this, levelFile);
+
+            l.initLevel(plateau);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public void initPlateau(int[][] c) {
+    public void initPlateau(int c[][]) throws IOException {
+
         Ligne = 0;
         colonne = 0;
         //reinit = true;
         for(int i =0; i < 19; i++) {
             for(int j=0; j < 10;j++) {
-                if (c[i][j] == MUR) {
+                if ((c[i][j]) == MUR) {
                     Ligne = i;
                     colonne = (j >= colonne)?j:colonne;
                 }//if
-                if (c[i][j] == Case.PERSO || c[i][j] == PERSO_GOAL) {
+                if (c[i][j] == PERSO || c[i][j] == PERSO_GOAL) {
                     lignePerso = i;
                     colonnePerso = j;
                 }
@@ -90,16 +91,29 @@ public class Plateau {
 
 
 
-    public void print() {
-        for(int i=0;i<19;i++) {
-            for (int j = 0; j <10;j++) {
+   /*public void print() {
+        int i;
+        int j;
+        for(i=0;i<19;i++) {
+            for (j = 0; j <10;j++) {
                 System.out.print(plateau[i][j]);
+
             }
             System.out.print("\n");
+
         }
-    }
+
+        System.out.println(i);
+    }*/
 
 
+
+    public void print() {
+
+        System.out.print(getPlateau().toString());
+        System.out.print("\n");
+
+        }
 
     public int[][] getPlateau() {
         return plateau;
@@ -132,6 +146,11 @@ public class Plateau {
     public static int getPersoGoal() {
         return PERSO_GOAL;
     }
+
+    public static int getCASE() {
+        return CASE;
+    }
+
 
 
 }
