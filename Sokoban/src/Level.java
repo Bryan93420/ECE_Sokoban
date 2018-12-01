@@ -1,87 +1,154 @@
 import java.io.*;
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Level {
 
-    private static Level l;
+    public int limColumns;
+    public int limLines;
+    protected boolean isPersoExist = false;
+    private int[][] levelArray;
+    public int[] readPlateForSpecificObject(int[][] levelGamePlate,
+                                            int whichObjectLookingFor){
 
-    public static Level getInstance() {
-        if (l == null) {
-            l = new Level();
+
+        int[] positionOfObject = new int[2];
+        positionOfObject[0] = -1;
+        positionOfObject[1] = -1;
+
+        for(int i=0; i< levelGamePlate.length; i++) {
+            for(int j=0; j < levelGamePlate[i].length; j++) {
+
+                if(levelGamePlate[i][j] == whichObjectLookingFor) {
+                    positionOfObject[0] = i;
+                    positionOfObject[1] = j;
+//                    System.out.print("i=" + positionOfObject[0] +
+//                            "\nj="+positionOfObject[1]);
+                    return positionOfObject;
+                }
+            }
         }
-        return l;
+
+        return positionOfObject;
     }
 
-    public static void initLevel(Plateau p) throws  IOException {
-        int[][] niveau = new int[19][12];
-        //InputStream in = getResourceAsStream(level);
+
+    public int readPlateForSpecificPlace(int[][] levelGamePlate,
+                                         int ligne_i, int column_j) {
+
+        int typeOfObject = -1;
+        //System.out.print(ligne_i + "|" + column_j);
+        if (levelGamePlate[ligne_i][column_j] >= 0) {
+            typeOfObject = levelGamePlate[ligne_i][column_j];
+            return typeOfObject;
+        }
+        else{
+            return typeOfObject;
+        }
+    }
+
+    public int[] getPersoPosition() {
+        return readPlateForSpecificObject(levelArray, Plateau.getPERSO());
+    }
+
+    public int[][] getLevelArray() {
+        return this.levelArray;
+    }
+
+    public void setLevelPlateMove(int desire_j, int desire_i, int desire_value) {
+        this.levelArray[desire_j][desire_i] = desire_value;
+    }
+
+    public void initializationLevel(Plateau p) throws  IOException {
+
+        FileInputStream azer = new FileInputStream("Plateau.txt");
+        BufferedReader poiu = new BufferedReader(new InputStreamReader(azer));
+        String aaa;
+        List<Integer> countFileSizes = new ArrayList<>();
+        while ( (aaa = poiu.readLine()) != null ){
+            countFileSizes.add(aaa.length());
+        }
+//        System.out.print("\n:" + countFileSizes.size() + " taille=" + countFileSizes.get(0) +"\n");
+
+        limLines = countFileSizes.size() ;
+
+        for ( int i = 0; i < countFileSizes.size() ; i++){
+            if(countFileSizes.get(0) !=  countFileSizes.get(i)){
+                System.out.print("Execution STOPPED because file source has inequals columns size\n");
+                //stop the app because file source as inequals columns size
+                System.exit(4);
+            }
+            else{
+                limColumns = countFileSizes.get(0);
+            }
+        }
+        azer.close();
+        poiu.close();
+//        System.out.print("lignes :" + limLines + "\ncolonnes : " + limColumns + "\n");
+        levelArray = new int[limLines][limColumns];
+
         FileInputStream in = new FileInputStream("Plateau.txt");
         BufferedReader flot = new BufferedReader(new InputStreamReader(in));
-        int ligneCourante = 0;
-        String ligne = flot.readLine();
-        //while (ligne.charAt(0) != 'A') {
-            for (int i = 0; i < 12; i++) {
-                for (int j = 0; j < 19; j++) {
+        String readLine;
+        int i = 0, j;
+
+        while( i < limLines && ( (readLine = flot.readLine() ) != null )){
+
+            for (j = 0; j < readLine.length() ; j++) {
+
+                switch (readLine.charAt(j)) {
+
+                    case '5':
+                        if(isPersoExist){
+                            System.out.print("Error in source file ! Because the Personnage already exists.");
+                            System.exit(5);
+                        }
+                        levelArray[i][j] = p.getPERSO();
+                        isPersoExist = true;
+                        break;
+                    case '0':
+                        levelArray[i][j] = p.getSOL();
+                        break;
+                    case '1':
+                        levelArray[i][j] = p.getMUR();
+                        break;
+                    case '2':
+                        levelArray[i][j] = p.getCAISSE();
+                        break;
+                    case '3':
+                        levelArray[i][j] = p.getCaissePlacee();
+                        break;
+                    case '4':
+                        levelArray[i][j] = p.getGOAL();
+                        break;
+                    case '6':
+                        levelArray[i][j] = p.getPersoGoal();
+                        break;
+
+                    default:
+                        System.out.print("\nInvalid data in source file !!! \nAt line:"
+                                + (i + 1) + " column:" + (j + 1) + " data in error: \"" + readLine.charAt(j) + "\"");
+                        System.exit(3);
+                        break;
+                }//switch
+
+            }//for i
+            i++;
+
+        } // while j<limLines AND readBuffer not empty
 
 
-                    //System.out.println(ligne.charAt(0));
-
-
-                    switch (ligne.charAt(i)) {
-                        case '5':
-                            niveau[ligneCourante][i] = p.getPERSO();
-                            break;
-                        case '0':
-                            niveau[ligneCourante][i] = p.getSOL();
-                            break;
-                        case '1':
-                            niveau[ligneCourante][i] = p.getMUR();
-                            break;
-                        case '2':
-                            niveau[ligneCourante][i] = p.getCAISSE();
-                            break;
-                        case '3':
-                            niveau[ligneCourante][i] = p.getCaissePlacee();
-                            break;
-                        case '4':
-                            niveau[ligneCourante][i] = p.getGOAL();
-                            break;
-                        case '6':
-                            niveau[ligneCourante][i] = p.getPersoGoal();
-                            break;
-
-                    }//switch
-                    System.out.print(ligne.charAt(i));
-                    System.out.print(ligne.charAt(j));
-                    //System.out.print(ligne.charAt(j));
-                }//for
-
-            }
-            /*
-            for (int i = 0; i < 19; i++) {
-                niveau[ligneCourante][i] = new Case(p, Case.SOL);
-            }//for
-*/
-            ligneCourante++;
-            ligne = flot.readLine();
-       // }//while
-
-
-
-        p.initPlateau(niveau);
+        p.initPlateau(levelArray);
+        in.close();
         flot.close();
     }//initLevel
 
-    public void print(){
-
-
-        for(int i = 0; i < 19; i++){
-            for(int j = 0; j<10; j++){
-
-            }
-        }
+    public int getLimColumns() {
+        return limColumns;
     }
 
+    public int getLimLines() {
+        return limLines;
+    }
 }
