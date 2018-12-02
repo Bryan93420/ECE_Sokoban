@@ -30,6 +30,5 @@ static boolean console = false;
         else{
             JFrame frame = new maVuePlateau();
         }
-//        p.print();
     }
 }
