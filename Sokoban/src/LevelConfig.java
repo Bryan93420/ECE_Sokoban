@@ -3,12 +3,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Level {
+public class LevelConfig {
 
-    public int limColumns;
-    public int limLines;
-    protected boolean isPersoExist = false;
     private int[][] levelArray;
+    private int limColumns;
+    private int limLines;
+    protected boolean isPersoExist = false;
     public int[] readPlateForSpecificObject(int[][] levelGamePlate,
                                             int whichObjectLookingFor){
 
@@ -52,15 +52,12 @@ public class Level {
         return readPlateForSpecificObject(levelArray, Plateau.getPERSO());
     }
 
-    public int[][] getLevelArray() {
-        return this.levelArray;
-    }
-
     public void setLevelPlateMove(int desire_j, int desire_i, int desire_value) {
         this.levelArray[desire_j][desire_i] = desire_value;
     }
 
-    public void initializationLevel(Plateau p) throws  IOException {
+    public int[][] loadLevelFromFile(Plateau internalCurrentPlateau) throws  IOException {
+
 
         FileInputStream azer = new FileInputStream("Plateau.txt");
         BufferedReader poiu = new BufferedReader(new InputStreamReader(azer));
@@ -104,26 +101,26 @@ public class Level {
                             System.out.print("Error in source file ! Because the Personnage already exists.");
                             System.exit(5);
                         }
-                        levelArray[i][j] = p.getPERSO();
+                        levelArray[i][j] = internalCurrentPlateau.getPERSO();
                         isPersoExist = true;
                         break;
                     case '0':
-                        levelArray[i][j] = p.getSOL();
+                        levelArray[i][j] = internalCurrentPlateau.getSOL();
                         break;
                     case '1':
-                        levelArray[i][j] = p.getMUR();
+                        levelArray[i][j] = internalCurrentPlateau.getMUR();
                         break;
                     case '2':
-                        levelArray[i][j] = p.getCAISSE();
+                        levelArray[i][j] = internalCurrentPlateau.getCAISSE();
                         break;
                     case '3':
-                        levelArray[i][j] = p.getCaissePlacee();
+                        levelArray[i][j] = internalCurrentPlateau.getCaissePlacee();
                         break;
                     case '4':
-                        levelArray[i][j] = p.getGOAL();
+                        levelArray[i][j] = internalCurrentPlateau.getGOAL();
                         break;
                     case '6':
-                        levelArray[i][j] = p.getPersoGoal();
+                        levelArray[i][j] = internalCurrentPlateau.getPersoGoal();
                         break;
 
                     default:
@@ -139,10 +136,16 @@ public class Level {
         } // while j<limLines AND readBuffer not empty
 
 
-        p.initPlateau(levelArray);
+//        internalCurrentPlateau.initPlateau(levelArray);
         in.close();
         flot.close();
+
+        return levelArray;
     }//initLevel
+
+    public int[][] getLevelArray() {
+        return this.levelArray;
+    }
 
     public int getLimColumns() {
         return limColumns;

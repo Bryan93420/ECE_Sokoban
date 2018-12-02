@@ -1,15 +1,17 @@
 import java.io.*;
 
-public class Plateau extends Level {
+public class Plateau extends LevelConfig {
 
 
+    private int limColumns;
+    private int limLines;
     private int nbPas;
     private int nbPousses;
-
-    private int[][] plateau = new int[limLines][10];
+    private int[][] arrayPlateau = new int[limLines][10];
+    private boolean fin_partie = false;
+    private LevelConfig levelGamePlate;
 
     public static int CASE;
-
     public static final int SOL = 0;
     public static final int MUR = 1;
     public static final int CAISSE = 2;
@@ -18,29 +20,36 @@ public class Plateau extends Level {
     public static final int PERSO = 5;
     public static final int PERSO_GOAL = 6;
 
-    private boolean fin_partie = false;
 
 
     public static final int CONSOLE = 1;
     public static final int GRAPHIQUE = 2;
 
-    private Level levelGamePlate;
 
-    public Plateau(Level levelGamePlate){
+    public Plateau(LevelConfig levelGamePlate){
         this.levelGamePlate = levelGamePlate;
+        try {
+            arrayPlateau = levelGamePlate.loadLevelFromFile(this);
+            limColumns = levelGamePlate.getLimColumns();
+            limLines = levelGamePlate.getLimLines();
+            fin_partie = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
     public void initPlateau(int c[][]) throws IOException {
-        limColumns = levelGamePlate.getLimColumns();
-        limLines = levelGamePlate.getLimLines();
-        fin_partie = false;
+//        limColumns = levelGamePlate.getLimColumns();
+//        limLines = levelGamePlate.getLimLines();
+//        fin_partie = false;
     }//initialiserPlateau
 
 
 
-    public int[][] getPlateau() {
-        return plateau;
+    public int[][] getArrayPlateau() {
+        return arrayPlateau;
     }
 
     public static int getSOL() {
@@ -186,17 +195,44 @@ public class Plateau extends Level {
     public void deplacementPerso(String chaineLue) {
 
         if (chaineLue.equals("z")) {
+            nbPas++;
             moveUp();
+            System.out.println("Moves :" +nbPas+ "\nPushes: "+nbPousses);
         } else if (chaineLue.equals("q")) {
+            nbPas++;
             moveLeft();
+            System.out.println("Moves :" +nbPas+ "\nPushes: "+nbPousses);
         } else if (chaineLue.equals("s")) {
+            nbPas++;
             moveBottom();
-        } else if (chaineLue.equals("d"))
+            System.out.println("Moves :" +nbPas+ "\nPushes: "+nbPousses);
+        } else if (chaineLue.equals("d")) {
+            nbPas++;
             moveRight();
-
-        else
+            System.out.println("Moves :" +nbPas+ "\nPushes: "+nbPousses);
+        }
+        else {
             System.out.println("Invalid move !!!");
+        }
     }
+
+
+    public int getLimLines() {
+        return limLines;
+    }
+
+    public int getLimColumns() {
+        return limColumns;
+    }
+
+    public int getNbPas() {
+        return nbPas;
+    }
+
+    public int getNbPousses() {
+        return nbPousses;
+    }
+
 
 
     public void showPlate() {
