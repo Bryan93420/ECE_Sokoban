@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ComponentListener;
 import java.io.File;
 
 public class maVuePlateau extends JFrame {
@@ -41,11 +42,19 @@ public class maVuePlateau extends JFrame {
 //        }
 
         frame = new Frame();
+
+//
+//        frame.addComponentListener(new ComponentListener()){
+//
+//        };
+
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        System.out.print("lignes:" + plateau.limLines + " col:" + plateau.limColumns);
         squares = new JPanel[plateau.getLimLines()][plateau.getLimColumns()];
         frame.setLayout(new GridLayout(8, 8));
-//        frame.setResizable(false);
+        //disable window resize
+        frame.setResizable(false);
 
 //        WindowListener l = new WindowAdapter() {
 //            public void windowClosing(WindowEvent e){
@@ -57,7 +66,7 @@ public class maVuePlateau extends JFrame {
         arrayFigures = plateau.getArrayPlateau();
 
         float ratio =  arrayFigures.length / arrayFigures[0].length;
-        this.frame.setSize(Math.round(500*ratio), Math.round(500*ratio));
+        this.frame.setSize(Math.round(26*arrayFigures[0].length), Math.round(26*arrayFigures.length));
         GridLayout experimentLayout = new GridLayout(arrayFigures.length,arrayFigures[0].length);
 //        GridBagConstraints c = new GridBagConstraints();
         frame.setLayout(experimentLayout);

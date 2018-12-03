@@ -92,7 +92,6 @@ public class Plateau extends LevelConfig {
 //            "limLines:" +limLines+ "limColumns:" +limColumns);
         if (positionPerso[0] > 0) {
 
-
             int typeObjectAbovePerso =
                     levelGamePlate.readPlateForSpecificPlace(
                             levelGamePlate.getLevelArray(),
