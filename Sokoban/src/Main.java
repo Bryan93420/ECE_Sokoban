@@ -29,6 +29,11 @@ public class Main {
         }
         else{
             JFrame frame = new maVuePlateau(currentPlateau);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//            frame.setResizable(false);
+
+//            ((maVuePlateau) frame).TestLayout20();
+
         }
     }
 }
