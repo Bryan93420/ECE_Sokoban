@@ -14,7 +14,7 @@ public class Main {
             currentPlateau.showPlate();
 
             for (int i = 0; i < 1000; i++) {
-                System.out.println("Youcan move with ZQSD keys");
+                System.out.println("You can move with ZQSD keys");
                 Scanner scanner = new Scanner(System.in);
                 String chaineLue = scanner.next();
 
@@ -28,11 +28,7 @@ public class Main {
             }
         }
         else{
-            JFrame frame = new maVuePlateau(currentPlateau);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            frame.setResizable(false);
-
-//            ((maVuePlateau) frame).TestLayout20();
+            new  maVuePlateau(currentPlateau);
 
         }
     }
