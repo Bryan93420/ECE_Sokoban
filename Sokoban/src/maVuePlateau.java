@@ -1,14 +1,18 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ComponentListener;
+import java.awt.event.*;
 import java.io.File;
 
-public class maVuePlateau extends JFrame {
+public class maVuePlateau extends JFrame implements KeyListener {
 
     ImageIcon monImage;
-    JPanel squares[][];
-    Frame frame;
+    JPanel globalPanel;
+    JMenuBar menubar;
+//    JMenuItem item;
+    JMenu menu, menu_deux;
+    //    JLabel squares[][];
+//    Frame frame;
     private Plateau currentPlateau;
     ImageIcon imageSol;
     ImageIcon imageMur;
@@ -17,10 +21,10 @@ public class maVuePlateau extends JFrame {
     ImageIcon imageGOAL;
     ImageIcon imagePERSO;
     ImageIcon imagePERSO_GOAL;
-    private final JPanel gui = new JPanel(new BorderLayout(3, 3));
 
     public maVuePlateau(Plateau plateau) {
 
+        currentPlateau = plateau;
         System.out.print(new File("").getAbsolutePath()+"\n");
         imageSol = createImageIcon("/img/sol.png","ez");
         imageMur = createImageIcon("/img/mur.gif","ez");
@@ -28,94 +32,93 @@ public class maVuePlateau extends JFrame {
         imageCAISSE_PLACEE = createImageIcon("/img/caisse.gif","ez");
         imageGOAL = createImageIcon("/img/goal.gif","ez");
         imagePERSO = createImageIcon("/img/perso.gif","ez");
-        imagePERSO_GOAL = createImageIcon("/img/perso.gif","ez");
-
-
-//        width=10;
-//        height=10;
-//        for(x=0;x<10;x++)
-//        {
-//            for(y=0;y<10;y++)
-//            {
-//                g.drawRect(x*width,y*height,width,height);
-//            }
-//        }
-
-        frame = new Frame();
-
-//
-//        frame.addComponentListener(new ComponentListener()){
-//
-//        };
-
+        imagePERSO_GOAL = createImageIcon("/img/perso_place.jpg","ez");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        GridLayout experimentLayout = new GridLayout(currentPlateau.getLimLines(),currentPlateau.getLimColumns());
+//        this.setLayout(experimentLayout);
+
 //        System.out.print("lignes:" + plateau.limLines + " col:" + plateau.limColumns);
-        squares = new JPanel[plateau.getLimLines()][plateau.getLimColumns()];
-        frame.setLayout(new GridLayout(8, 8));
+        globalPanel = new JPanel();
+        this.add(globalPanel);
+
+        menubar = new JMenuBar();
+        menu = new JMenu();
+        menubar.add(menu);
+//        item = new JMenuItem("Menu Item");
+//        menu.add(item);
+        this.setJMenuBar(menubar);
+
+//        globalPanel.add(menubar, BorderLayout.NORTH);
+        globalPanel.setLayout(new BorderLayout());
+        globalPanel.setLayout(experimentLayout);
+//        globalPanel.setSize(500,500);
+
         //disable window resize
-        frame.setResizable(false);
+        this.setResizable(false);
+        this.addKeyListener(this);
 
-//        WindowListener l = new WindowAdapter() {
-//            public void windowClosing(WindowEvent e){
-//                System.exit(0);
-//            }
-//        };
-//        addWindowListener(l);
-        int[][] arrayFigures;
-        arrayFigures = plateau.getArrayPlateau();
+        WindowListener l = new WindowAdapter() {
+            public void windowClosing(WindowEvent e){
+                System.exit(0);
+            }
+        };
+        addWindowListener(l);
 
-        float ratio =  arrayFigures.length / arrayFigures[0].length;
-        this.frame.setSize(Math.round(26*arrayFigures[0].length), Math.round(26*arrayFigures.length));
-        GridLayout experimentLayout = new GridLayout(arrayFigures.length,arrayFigures[0].length);
-//        GridBagConstraints c = new GridBagConstraints();
-        frame.setLayout(experimentLayout);
+        fillPlayableArray(plateau.getArrayPlateau());
 
-        for (int i = 0; i < arrayFigures.length ; i++) {
-            for (int j = 0; j < arrayFigures[i].length; j++) {
-                squares[i][j] = new JPanel(new GridBagLayout());
+        this.setVisible(true);
+    }
 
+    private void fillPlayableArray(int[][] arrayPlateau) {
+        this.globalPanel.removeAll();
 
+        this.setSize(Math.round(26*arrayPlateau[0].length), Math.round(26*arrayPlateau.length));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        for (int i = 0; i < arrayPlateau.length ; i++) {
+            for (int j = 0; j < arrayPlateau[i].length; j++) {
 
-//                compsToExperiment.setLayout(experimentLayout);
-
-//                squares[i][j] = new JPanel();
-//                c.gridx = 1;
-//                c.gridy = 1;
-//                squares[i][j].setSize(50,50);
-
-                if ( arrayFigures[i][j] == 0) {
-                    squares[i][j].add(new JLabel(imageSol));
+                //System.out.print("i" + i + " j:"+ j);
+                if ( arrayPlateau[i][j] == 0) {
+                    globalPanel.add(new JLabel(imageSol));
                 }
-                else if ( arrayFigures[i][j] == 1) {
-                    squares[i][j].add(new JLabel(imageMur));
+                else if ( arrayPlateau[i][j] == 1) {
+                    globalPanel.add(new JLabel(imageMur));
                 }
-                else if ( arrayFigures[i][j] == 2) {
-                    squares[i][j].add(new JLabel(imageCAISSE));
+                else if ( arrayPlateau[i][j] == 2) {
+                    globalPanel.add(new JLabel(imageCAISSE));
                 }
-                else if ( arrayFigures[i][j] == 3) {
-                    squares[i][j].add(new JLabel(imageCAISSE_PLACEE));
+                else if ( arrayPlateau[i][j] == 3) {
+                    globalPanel.add(new JLabel(imageCAISSE_PLACEE));
                 }
-                else if ( arrayFigures[i][j] == 4) {
-                    squares[i][j].add(new JLabel(imageGOAL));
+                else if ( arrayPlateau[i][j] == 4) {
+//                    squares[i][j] = new JLabel(imageGOAL);
+                    globalPanel.add(new JLabel(imageGOAL));
                 }
-                else if ( arrayFigures[i][j] == 5) {
-                    squares[i][j].add(new JLabel(imagePERSO));
+                else if ( arrayPlateau[i][j] == 5) {
+//                    squares[i][j] = new JLabel(imagePERSO);
+                    globalPanel.add(new JLabel(imagePERSO));
+
                 }
-                else if ( arrayFigures[i][j] == 6) {
-                    squares[i][j].add(new JLabel(imagePERSO_GOAL));
+                else if ( arrayPlateau[i][j] == 6) {
+//                    squares[i][j] = new JLabel(imagePERSO_GOAL);
+                    globalPanel.add(new JLabel(imagePERSO_GOAL));
+
                 }
                 else {
-                    System.out.print("o");
-                    squares[i][j].setBackground(Color.orange);
-                    squares[i][j].add(new JLabel(monImage));
+                    globalPanel.add(new JLabel(imagePERSO_GOAL));
                 }
-                frame.add(squares[i][j]);
             }
         }
-//        squares[5][4].add(new JLabel(monImage));
-        frame.setVisible(true);
+        this.add(globalPanel);
+
+
+        menubar.remove(menu);
+        menu = new JMenu("Moves: " + currentPlateau.getNbPas());
+        menubar.add(menu);
+
+this.globalPanel.updateUI();
     }
 
     /** Returns an ImageIcon, or null if the path was invalid. */
@@ -124,7 +127,6 @@ public class maVuePlateau extends JFrame {
         java.net.URL imgURL = getClass().getResource(path);
 
         if (imgURL != null) {
-
 
             ImageIcon imageIcon = new ImageIcon(imgURL, description);
             Image image = imageIcon.getImage(); // transform it
@@ -139,6 +141,51 @@ public class maVuePlateau extends JFrame {
         }
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+//        System.out.println("interface touchée");
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+
+        switch( keyCode ) {
+
+            case KeyEvent.VK_UP:
+                System.out.println("haut");
+                currentPlateau.moveUp();
+                fillPlayableArray(currentPlateau.getArrayPlateau());
+//                SwingUtilities.updateComponentTreeUI(this);
+//                this.repaint();
+//                this.revalidate();
+
+
+                break;
+            case KeyEvent.VK_DOWN:
+                System.out.println("bas");
+                currentPlateau.moveBottom();
+                fillPlayableArray(currentPlateau.getArrayPlateau());
+                break;
+            case KeyEvent.VK_LEFT:
+                System.out.println("gauche");
+                currentPlateau.moveLeft();
+                fillPlayableArray(currentPlateau.getArrayPlateau());
+                break;
+
+            case KeyEvent.VK_RIGHT :
+                System.out.println("droite");
+                currentPlateau.moveRight();
+                fillPlayableArray(currentPlateau.getArrayPlateau());
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+//        System.out.println("interface touchée");
+    }
 
 
 
