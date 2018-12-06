@@ -5,7 +5,7 @@ public class Plateau extends LevelConfig {
 
     private int limColumns;
     private int limLines;
-    private int nbPas;
+    public int nbPas;
     private int nbPousses;
     private int[][] arrayPlateau = new int[limLines][10];
     private boolean fin_partie = false;
@@ -104,7 +104,7 @@ public class Plateau extends LevelConfig {
             levelGamePlate.setLevelPlateMove((positionPerso[0] - 1), positionPerso[1], getPERSO());
 //old case where perso was is replaced by the up case
             levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], typeObjectAbovePerso);
-
+            nbPas++;
             int[] positionPerso_VERIF = levelGamePlate.getPersoPosition();
 //    System.out.println("VERIF : perso : i:" + (positionPerso_VERIF[0]+1) + " j:" + (positionPerso_VERIF[1]+1) + "\n");
 
@@ -119,16 +119,18 @@ public class Plateau extends LevelConfig {
     }
 
     public void moveBottom() {
+        nbPas++;
+
 
         int[] positionPerso = levelGamePlate.getPersoPosition();
         if (positionPerso[0] < limLines - 1) {
 
 
-            int typeObjectBelowPerso =
-                    levelGamePlate.readPlateForSpecificPlace(
-                            levelGamePlate.getLevelArray(),
-                            (positionPerso[0] + 1),
-                            positionPerso[1]);
+        int typeObjectBelowPerso =
+                levelGamePlate.readPlateForSpecificPlace(
+                        levelGamePlate.getLevelArray(),
+                        (positionPerso[0] + 1),
+                        positionPerso[1]);
 
             levelGamePlate.setLevelPlateMove((positionPerso[0] + 1), positionPerso[1], getPERSO());
 //old case where perso was is replaced by the up case
@@ -144,12 +146,13 @@ public class Plateau extends LevelConfig {
     }
 
     public void moveLeft() {
+        nbPas++;
 
         int[] positionPerso = levelGamePlate.getPersoPosition();
         if (positionPerso[1] > 0) {
 
 
-            int typeObjectBelowPerso =
+            int typeObjectLeftSidePerso =
                     levelGamePlate.readPlateForSpecificPlace(
                             levelGamePlate.getLevelArray(),
                             (positionPerso[0]),
@@ -158,7 +161,7 @@ public class Plateau extends LevelConfig {
 
             levelGamePlate.setLevelPlateMove((positionPerso[0]), (positionPerso[1] - 1), getPERSO());
 //old case where perso was is replaced by the up case
-            levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], typeObjectBelowPerso);
+            levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], typeObjectLeftSidePerso);
 
             showPlate();
             System.out.print("You moved left\n");
@@ -170,6 +173,7 @@ public class Plateau extends LevelConfig {
     }
 
     public void moveRight() {
+        nbPas++;
 
         int[] positionPerso = levelGamePlate.getPersoPosition();
 

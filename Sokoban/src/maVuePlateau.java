@@ -1,16 +1,14 @@
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 
 public class maVuePlateau extends JFrame implements KeyListener {
 
-    ImageIcon monImage;
     JPanel globalPanel;
     JMenuBar menubar;
-//    JMenuItem item;
-    JMenu menu, menu_deux;
+    JMenuItem optionRestart;
+    JMenu menuViewMoves, menuViewPushes, menuGameOptions;
     //    JLabel squares[][];
 //    Frame frame;
     private Plateau currentPlateau;
@@ -43,12 +41,23 @@ public class maVuePlateau extends JFrame implements KeyListener {
         this.add(globalPanel);
 
         menubar = new JMenuBar();
-        menu = new JMenu();
-        menubar.add(menu);
-//        item = new JMenuItem("Menu Item");
-//        menu.add(item);
+        menuViewMoves = new JMenu();
+        menuViewPushes = new JMenu();
+        menuGameOptions = new JMenu("Options");
+        optionRestart = new JMenuItem("Restart");
+
+        menuGameOptions.add(optionRestart);
+        menubar.add(menuGameOptions);
+        menubar.add(menuViewMoves);
+        menubar.add(menuViewPushes);
+
         this.setJMenuBar(menubar);
 
+        optionRestart.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+//                System.exit(0);
+            }
+        });
 //        globalPanel.add(menubar, BorderLayout.NORTH);
         globalPanel.setLayout(new BorderLayout());
         globalPanel.setLayout(experimentLayout);
@@ -66,7 +75,6 @@ public class maVuePlateau extends JFrame implements KeyListener {
         addWindowListener(l);
 
         fillPlayableArray(plateau.getArrayPlateau());
-
         this.setVisible(true);
     }
 
@@ -114,9 +122,15 @@ public class maVuePlateau extends JFrame implements KeyListener {
         this.add(globalPanel);
 
 
-        menubar.remove(menu);
-        menu = new JMenu("Moves: " + currentPlateau.getNbPas());
-        menubar.add(menu);
+//        menubar.remove(menuGameOptions);
+        menubar.remove(menuViewMoves);
+        menubar.remove(menuViewPushes);
+//        menuGameOptions = new JMenu("Options");
+        menuViewMoves = new JMenu("Moves: " + currentPlateau.getNbPas());
+        menuViewPushes = new JMenu("Pushes: " + currentPlateau.getNbPousses());
+        menubar.add(menuGameOptions);
+        menubar.add(menuViewMoves);
+        menubar.add(menuViewPushes);
 
 this.globalPanel.updateUI();
     }
