@@ -8,6 +8,7 @@ public class maVuePlateau extends JFrame implements KeyListener {
     JPanel globalPanel;
     JMenuBar menubar;
     JMenuItem optionRestart;
+    JMenuItem optionPause;
     JMenu menuViewMoves, menuViewPushes, menuGameOptions;
     //    JLabel squares[][];
 //    Frame frame;
@@ -24,13 +25,13 @@ public class maVuePlateau extends JFrame implements KeyListener {
 
         currentPlateau = plateau;
         System.out.print(new File("").getAbsolutePath()+"\n");
-        imageSol = createImageIcon("/img/sol.png","ez");
-        imageMur = createImageIcon("/img/mur.gif","ez");
-        imageCAISSE = createImageIcon("/img/caisse.gif","ez");
-        imageCAISSE_PLACEE = createImageIcon("/img/caisse.gif","ez");
-        imageGOAL = createImageIcon("/img/goal.gif","ez");
-        imagePERSO = createImageIcon("/img/perso.gif","ez");
-        imagePERSO_GOAL = createImageIcon("/img/perso_place.jpg","ez");
+        imageSol = createImageIcon("/img/sol.jpg","sol");
+        imageMur = createImageIcon("/img/mur.jpg","mur");
+        imageCAISSE = createImageIcon("/img/caisse.jpg","caisse");
+        imageCAISSE_PLACEE = createImageIcon("/img/caisse.jpg","caisse placée");
+        imageGOAL = createImageIcon("/img/goal.jpg","but");
+        imagePERSO = createImageIcon("/img/perso.jpg","personnage");
+        imagePERSO_GOAL = createImageIcon("/img/perso_place.jpg","personnage victorieux");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GridLayout experimentLayout = new GridLayout(currentPlateau.getLimLines(),currentPlateau.getLimColumns());
@@ -44,20 +45,27 @@ public class maVuePlateau extends JFrame implements KeyListener {
         menuViewMoves = new JMenu();
         menuViewPushes = new JMenu();
         menuGameOptions = new JMenu("Options");
-        optionRestart = new JMenuItem("Restart");
+        optionRestart = new JMenuItem("Restart game");
+        optionPause = new JMenuItem("Pause game");
 
         menuGameOptions.add(optionRestart);
+        menuGameOptions.add(optionPause);
         menubar.add(menuGameOptions);
         menubar.add(menuViewMoves);
         menubar.add(menuViewPushes);
 
         this.setJMenuBar(menubar);
 
-        optionRestart.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) {
-//                System.exit(0);
-            }
-        });
+//        optionRestart.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent ev) {
+////                System.exit(0);
+//            }
+//        });
+//        optionPause.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent ev) {
+////                System.exit(0);
+//            }
+//        });
 //        globalPanel.add(menubar, BorderLayout.NORTH);
         globalPanel.setLayout(new BorderLayout());
         globalPanel.setLayout(experimentLayout);

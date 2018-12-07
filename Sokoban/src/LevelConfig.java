@@ -35,7 +35,7 @@ public class LevelConfig {
 
 
     public int readPlateForSpecificPlace(int[][] levelGamePlate,
-                                         int ligne_i, int column_j) {
+                                         int ligne_i, int column_j){
 
         int typeOfObject = -1;
         //System.out.print(ligne_i + "|" + column_j);

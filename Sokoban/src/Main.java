@@ -1,11 +1,13 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
 
 public class Main {
 
 //    static boolean consoleMode = true;
     static boolean consoleMode = false;
-
+    private static maVuePlateau monAppli;
     public static void main(String[] args)throws Exception {
         LevelConfig currentLevel = new LevelConfig();
         Plateau currentPlateau = new Plateau(currentLevel);
@@ -28,8 +30,18 @@ public class Main {
             }
         }
         else{
-            new  maVuePlateau(currentPlateau);
+            monAppli = new  maVuePlateau(currentPlateau);
 
+            monAppli.optionRestart.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ev) {
+                    System.exit(0);
+                }
+            });
+            monAppli.optionPause.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ev) {
+//                System.exit(0);
+                }
+            });
         }
     }
 }
