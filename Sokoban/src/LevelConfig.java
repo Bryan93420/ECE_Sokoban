@@ -51,6 +51,9 @@ public class LevelConfig {
     public int[] getPersoPosition() {
         return readPlateForSpecificObject(levelArray, Plateau.getPERSO());
     }
+    public int[] getMurPosition(){ return readPlateForSpecificObject(levelArray, Plateau.getMUR()); }
+    public int[] getCaissePosition(){ return readPlateForSpecificObject(levelArray, Plateau.getCAISSE()); }
+    public int[] getCaissePlaceePosition(){ return readPlateForSpecificObject(levelArray, Plateau.getCaissePlacee()); }
 
     public void setLevelPlateMove(int desire_j, int desire_i, int desire_value) {
         this.levelArray[desire_j][desire_i] = desire_value;
