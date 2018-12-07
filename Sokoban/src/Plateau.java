@@ -26,6 +26,8 @@ public class Plateau extends LevelConfig {
     public static final int GRAPHIQUE = 2;
 
 
+
+
     public Plateau(LevelConfig levelGamePlate){
         this.levelGamePlate = levelGamePlate;
         try {
@@ -85,10 +87,13 @@ public class Plateau extends LevelConfig {
     }
 
 
+
+
     public void moveUp() {
 
         int[] positionPerso = levelGamePlate.getPersoPosition();
-        int[] positionCaisse = levelGamePlate.getCaissePosition();
+        //int[] positionCaisse = levelGamePlate.getCaissePosition();
+
 //    System.out.println("perso : i:" + (positionPerso[0]+1) + " j:"+ (positionPerso[1]+1) + "\n"+
 //            "limLines:" +limLines+ "limColumns:" +limColumns);
         if (positionPerso[0] > 0 ) {
@@ -99,22 +104,32 @@ public class Plateau extends LevelConfig {
                             (positionPerso[0] - 1),
                             positionPerso[1]);
 
-            if (typeObjectAbovePerso == levelGamePlate.getMurPosition()[0]) {
+            int typeObjectAboveObject =
+                    levelGamePlate.readPlateForSpecificPlace(
+                            levelGamePlate.getLevelArray(),
+                            (positionPerso[0] - 2),
+                            positionPerso[1]);
+
+            if (typeObjectAbovePerso != getMUR()) {
 
 
 //    System.out.println("objet au dessus : i:" + (positionPerso[0]) + " j:"+(positionPerso[1]+1) + " est: " + typeObjectAbovePerso + "\n");
 
-                if(typeObjectAbovePerso == levelGamePlate.getCaissePosition()[0]){
+                if(typeObjectAbovePerso == getCAISSE() && typeObjectAboveObject != getMUR()){
                     //move the perso on the up case
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]) - 2, positionPerso[1], getCAISSE());
                     levelGamePlate.setLevelPlateMove((positionPerso[0] - 1), positionPerso[1], getPERSO());
-                    levelGamePlate.setLevelPlateMove((positionCaisse[0]) - 1, positionCaisse[1], getCAISSE());
-//old case where perso was replaced by the up case
-                //    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], typeObjectAbovePerso);
+
+
+                    //old case where perso was replaced by the up case
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], getSOL());
 
 
                     nbPas++;
                     showPlate();
                     System.out.print("You moved up\n");
+                }else if (typeObjectAbovePerso == getCAISSE() && typeObjectAboveObject == getMUR()) {
+
                 }else {
 
 
@@ -149,6 +164,7 @@ public class Plateau extends LevelConfig {
     public void moveBottom() {
 
         int[] positionPerso = levelGamePlate.getPersoPosition();
+        int[] positionCaisse = levelGamePlate.getCaissePosition();
         if (positionPerso[0] < limLines - 1) {
 
 
@@ -158,19 +174,55 @@ public class Plateau extends LevelConfig {
                             (positionPerso[0] + 1),
                             positionPerso[1]);
 
-            if (typeObjectBelowPerso == levelGamePlate.getMurPosition()[0]) {
+            int typeObjectBelowObject =
+                    levelGamePlate.readPlateForSpecificPlace(
+                            levelGamePlate.getLevelArray(),
+                            (positionPerso[0] + 2),
+                            positionPerso[1]);
 
-                levelGamePlate.setLevelPlateMove((positionPerso[0] + 1), positionPerso[1], getPERSO());
+
+
+
+            System.out.println("Cet objet est" + typeObjectBelowObject);
+
+            if (typeObjectBelowPerso != getMUR()) {
+
+                if(typeObjectBelowPerso == getCAISSE() && typeObjectBelowObject != getMUR()) {
+
+
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]) + 2, positionPerso[1], getCAISSE());
+                    levelGamePlate.setLevelPlateMove((positionPerso[0] + 1), positionPerso[1], getPERSO());
+
+
 //old case where perso was is replaced by the up case
-                levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], typeObjectBelowPerso);
-                nbPas++;
-                showPlate();
-                System.out.print("You moved down\n");
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], getSOL());
+                    nbPas++;
+                    showPlate();
+                    System.out.print("You moved down\n");
+
+                }else if (typeObjectBelowPerso == getCAISSE() && typeObjectBelowObject == getMUR()) {
+
+
+
+                }else{
+
+
+                    levelGamePlate.setLevelPlateMove((positionPerso[0] + 1), positionPerso[1], getPERSO());
+
+//old case where perso was is replaced by the up case
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], getSOL());
+
+
+                    nbPas++;
+                    showPlate();
+                    System.out.print("You moved down\n");
+                }
 
             }else{
                 showPlate();
                 System.out.print("Une caisse est juste en dessous !\n");
             }
+
 
         } else {
             showPlate();
@@ -181,6 +233,7 @@ public class Plateau extends LevelConfig {
     public void moveLeft() {
 
         int[] positionPerso = levelGamePlate.getPersoPosition();
+        int[] positionCaisse = levelGamePlate.getCaissePosition();
         // Si perso touche le bord du plateau
         if (positionPerso[1] > 0) {
 
@@ -191,14 +244,37 @@ public class Plateau extends LevelConfig {
                             (positionPerso[0]),
                             (positionPerso[1] - 1));
 
-            if (typeObjectLeftPerso == levelGamePlate.getMurPosition()[1]) {
+            int typeObjectLeftObject =
+                    levelGamePlate.readPlateForSpecificPlace(
+                            levelGamePlate.getLevelArray(),
+                            (positionPerso[0]),
+                            positionPerso[1] - 2);
 
-                levelGamePlate.setLevelPlateMove((positionPerso[0]), (positionPerso[1] - 1), getPERSO());
+            if (typeObjectLeftPerso != getMUR() ) {
+
+                if(typeObjectLeftPerso == getCAISSE() && typeObjectLeftObject != getMUR()) {
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1] - 2, getCAISSE());
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), (positionPerso[1] - 1), getPERSO());
+
 //old case where perso was is replaced by the up case
-                levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], typeObjectLeftPerso);
-                nbPas++;
-                showPlate();
-                System.out.print("You moved left\n");
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], getSOL());
+                    nbPas++;
+                    showPlate();
+                    System.out.print("You moved left\n");
+                }else if(typeObjectLeftPerso == getCAISSE() && typeObjectLeftObject == getMUR())    {
+
+                }else{
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1] - 1, getPERSO());
+//old case where perso was is replaced by the up case
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], getSOL());
+
+
+                    nbPas++;
+                    showPlate();
+                    System.out.print("You moved left\n");
+                }
+
+
             }
             else{
                 showPlate();
@@ -214,6 +290,7 @@ public class Plateau extends LevelConfig {
     public void moveRight() {
 
         int[] positionPerso = levelGamePlate.getPersoPosition();
+        int[] positionCaisse = levelGamePlate.getCaissePosition();
 
         if (positionPerso[1] < limColumns - 1) {
 
@@ -222,15 +299,44 @@ public class Plateau extends LevelConfig {
                     (positionPerso[0]),
                     (positionPerso[1] + 1));
 
+            int typeObjectRightObject =
+                    levelGamePlate.readPlateForSpecificPlace(
+                            levelGamePlate.getLevelArray(),
+                            (positionPerso[0]),
+                            positionPerso[1] + 2);
+            int typeObjectRightGoal =
+                    levelGamePlate.readPlateForSpecificPlace(
+                            levelGamePlate.getLevelArray(),
+                            (positionPerso[0]),
+                            positionPerso[1] + 2);
 
-            if (typeObjectRightPerso == levelGamePlate.getMurPosition()[1]) {
 
+            if (typeObjectRightPerso != getMUR()) {
 
-                levelGamePlate.setLevelPlateMove((positionPerso[0]), (positionPerso[1] + 1), getPERSO());
+                if(typeObjectRightPerso == getCAISSE() && typeObjectRightObject != getMUR()) {
+
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1] + 2, getCAISSE());
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), (positionPerso[1] + 1), getPERSO());
+
 //old case where perso was is replaced by the up case
-                levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], typeObjectRightPerso);
-                showPlate();
-                System.out.print("You moved right\n");
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], getSOL());
+                    showPlate();
+                    System.out.print("You moved right\n");
+
+
+                }else if (typeObjectRightPerso == getCAISSE() && typeObjectRightObject == getMUR()){
+
+                }
+                else{
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1] + 1, getPERSO());
+//old case where perso was is replaced by the up case
+                    levelGamePlate.setLevelPlateMove((positionPerso[0]), positionPerso[1], getSOL());
+
+
+                    nbPas++;
+                    showPlate();
+                    System.out.print("You moved right\n");
+                }
             }else{
                 showPlate();
                 System.out.print("Une caisse est juste à droite !\n");
