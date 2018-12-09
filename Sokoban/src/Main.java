@@ -1,19 +1,17 @@
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Scanner;
 
 public class Main {
 
-//    static boolean consoleMode = true;
+    //    static boolean consoleMode = true;
     static boolean consoleMode = false;
-    private static maVuePlateau monAppli;
-    public static void main(String[] args)throws Exception {
-        LevelConfig currentLevel = new LevelConfig();
-        Plateau currentPlateau = new Plateau(currentLevel);
 
+    public static void main(String[] args) throws Exception {
+
+        new MenuNiveaux();
+//        Plateau currentPlateau = new Plateau("esdf"); // on choisira le niveau qu'on veut (ici le 1)
+/*
         if(consoleMode) {
-            currentPlateau.showPlate();
+            currentPlateau.showBoardInConsole(consoleMode);
 
             for (int i = 0; i < 1000; i++) {
                 System.out.println("You can move with ZQSD keys");
@@ -30,18 +28,11 @@ public class Main {
             }
         }
         else{
-            monAppli = new  maVuePlateau(currentPlateau);
+            new MenuNiveaux();
+//            new  maVuePlateau(currentPlateau);
+//            consoleMode = true; // force l'affichage de la console même en mode Graphique, très utile pour débug
 
-            monAppli.optionRestart.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent ev) {
-                    System.exit(0);
-                }
-            });
-            monAppli.optionPause.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent ev) {
-//                System.exit(0);
-                }
-            });
-        }
+    }
+    */
     }
 }
