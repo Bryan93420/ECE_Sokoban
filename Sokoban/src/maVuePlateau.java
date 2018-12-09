@@ -3,10 +3,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
-public class maVuePlateau extends JFrame implements KeyListener {
-
-    private Plateau currentPlateau;
+public class maVuePlateau extends JFrame implements KeyListener, ActionListener {
+    JLabel labelTemps;
+    private Plateau currentPlateau, currentPlateau_saved;
     JPanel globalPanel;
     JMenuBar menubar;
     JMenuItem optionRestart;
@@ -14,7 +15,7 @@ public class maVuePlateau extends JFrame implements KeyListener {
     JMenu menuViewMoves, menuViewPushes, menuGameOptions;
     //    boolean isAlreadyABoardLoaded;
     int numberOfFirstLevelOnLaunched;
-    String pathOfFirstLevelLaunched;
+    String pathOfFirstLevelLaunched; // contient le chemin du niveau chargé, utile pour restart une partie
     ImageIcon imageSol;
     ImageIcon imageMur;
     public ImageIcon imageCAISSE;
@@ -22,12 +23,24 @@ public class maVuePlateau extends JFrame implements KeyListener {
     ImageIcon imageGOAL;
     ImageIcon imagePERSO;
     ImageIcon imagePERSO_GOAL;
+//    TestStopWatch chr;
 
-    public maVuePlateau(Plateau plateau) {
+    public maVuePlateau(Plateau plateau, boolean needACloneOfFisrtInstance) {
 
         globalPanel = new JPanel();
+//        chr = new TestStopWatch();
 
-        currentPlateau = plateau;
+
+        if(needACloneOfFisrtInstance){
+            currentPlateau = (Plateau) plateau.clone();
+            currentPlateau_saved = (Plateau) plateau.clone();
+        }
+        else{
+            currentPlateau = plateau;
+            currentPlateau_saved = (Plateau) currentPlateau.clone();
+        }
+System.out.println("construction: "+currentPlateau + " et " + currentPlateau_saved + "=============" +currentPlateau_saved.levelConfigBoard.limLines);
+
         System.out.print(new File("").getAbsolutePath() + "\n");
         imageSol = createImageIcon("./img/sol.jpg", "sol");
         imageMur = createImageIcon("./img/mur.jpg", "mur");
@@ -42,6 +55,36 @@ public class maVuePlateau extends JFrame implements KeyListener {
 
 //        System.out.print("lignes:" + plateau.limLines + " col:" + plateau.limColumns);
 
+
+
+
+
+
+
+
+
+
+        labelTemps = new JLabel("0 secondes");
+        Timer SimpleTimer = new Timer(1000, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+    //on découpe la chaine pour séparer les (Heure:Minute:Seconde) des (.nano-secondes)
+                String[] time = currentPlateau.watch.timer.toString().split("[.]");
+    //ici on récupère la première partie du tableau, qui contient (Heure:Minute:Seconde)
+                 labelTemps.setText(time[0]);
+            }
+        });
+        SimpleTimer.start();
+
+
+        currentPlateau.watch = new StopWatchRunner();
+        currentPlateau.watch.timer.start();
+//        watch.setFont(new Font("SansSerif", Font.BOLD, 24));
+//        watch.setBackground(Color.LIGHT_GRAY);
+//        watch.setForeground(new Color(180, 0, 0));
+        currentPlateau.watch.setOpaque(true);
+//        labelTemps = new JLabel(""+currentPlateau.watch.timer.getTime());
+//        labelTemps.add();
         this.add(globalPanel);
 
         menubar = new JMenuBar();
@@ -56,21 +99,22 @@ public class maVuePlateau extends JFrame implements KeyListener {
         menubar.add(menuGameOptions);
         menubar.add(menuViewMoves);
         menubar.add(menuViewPushes);
+        menubar.add(labelTemps);
 
         this.setJMenuBar(menubar);
 
 
         optionRestart.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-
-                try {
-
-                    currentPlateau.restartGame();
-                    currentPlateau.showBoardInConsole(Main.consoleMode);
-                    fillPlayableArray(currentPlateau.levelConfigBoard.levelArray);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                on kill cet objet
+                dispose();
+//                on créer un nouvel objet identique à ce qu'on avait au départ
+                System.out.println("restart: "+currentPlateau + " et " + currentPlateau_saved + "===" +currentPlateau_saved.levelConfigBoard.limLines);
+                LevelConfig newLevel = new LevelConfig(pathOfFirstLevelLaunched);
+                Plateau newPlateau = new Plateau(newLevel, false);
+                maVuePlateau newViewPlateau = new maVuePlateau(newPlateau, true);
+                newViewPlateau.setPathOfFirstLevelLaunched(pathOfFirstLevelLaunched);
+                newViewPlateau.setNumberOfFirstLevelOnLaunched(numberOfFirstLevelOnLaunched);
 
             }
         });
@@ -105,7 +149,7 @@ public class maVuePlateau extends JFrame implements KeyListener {
         this.numberOfFirstLevelOnLaunched = numberOfFirstLevelOnLaunched;
     }
 
-    private void fillPlayableArray(int[][] arrayPlateau) {
+    protected void fillPlayableArray(int[][] arrayPlateau) {
         this.globalPanel.removeAll();
 
         this.setSize(Math.round(26 * arrayPlateau[0].length), Math.round(26 * arrayPlateau.length));
@@ -289,8 +333,8 @@ public class maVuePlateau extends JFrame implements KeyListener {
 //            System.out.print("ezrtgfvdsfg2222: "+ pathOfTheLevelWithFileExtension + "level"+(numberOfTheLevel+1) +".txt");
             String nextLevel = pathOfTheLevelWithFileExtension + "level" + (numberOfTheLevel + 1) + ".txt";
             LevelConfig currentLevel = new LevelConfig(nextLevel);
-            Plateau currentPlateau = new Plateau(currentLevel); // on choisira le niveau qu'on veut (ici le 1)
-            new maVuePlateau(currentPlateau);
+            Plateau currentPlateau = new Plateau(currentLevel, false); // on choisira le niveau qu'on veut (ici le 1)
+            new maVuePlateau(currentPlateau, false);
 
 
         }else if (result == 1) { //bouton du milieu clické
@@ -307,7 +351,59 @@ public class maVuePlateau extends JFrame implements KeyListener {
         this.pathOfFirstLevelLaunched = pathOfFirstLevelLaunched;
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 
 
+//    public class TestStopWatch {
+
+//        private void buildchiff() {
+//
+//            setVisible(true);
+//            setTitle("jeu des chiffres et des lettres");
+//            setSize(437, 600);
+//            setLocationRelativeTo(null);
+//            setResizable(false);
+//            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//            setContentPane(buildContentPane());
+//        }
+
+//        @SuppressWarnings("deprecation")
+//        private Container buildContentPane() {
+//            JPanel panel = new JPanel();
+//            StopWatchRunner watch = new StopWatchRunner();
+//            watch.setFont(new Font("SansSerif", Font.BOLD, 24));
+//            watch.setBackground(Color.LIGHT_GRAY);
+//            watch.setForeground(new Color(180, 0, 0));
+//            watch.setOpaque(true);
+//            panel.add(watch, BorderLayout.CENTER);
+
+//            return panel;
+//        }
+
+//    }
+
+
+
+//    public Object clone() {
+//        maVuePlateau maPETITEvuePlateau = null;
+//        try {
+//            // On récupère l'instance à renvoyer par l'appel de la
+//            // méthode super.clone()
+//            maPETITEvuePlateau = (maVuePlateau) super.clone();
+//        } catch(CloneNotSupportedException cnse) {
+//            // Ne devrait jamais arriver car nous implémentons
+//            // l'interface Cloneable
+//            cnse.printStackTrace(System.err);
+//        }
+//
+//        // On clone l'attribut de type Patronyme qui n'est pas immuable.
+//        maPETITEvuePlateau.currentPlateau_saved = (Plateau) this.currentPlateau.clone();
+//
+//        // on renvoie le clone
+//        return maPETITEvuePlateau;
+//    }
 }
 

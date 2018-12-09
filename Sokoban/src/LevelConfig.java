@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class LevelConfig {
+public class LevelConfig implements Cloneable{
 
     public int[][] levelArray;
     public int[][] savedBasePlateau;
@@ -230,7 +230,6 @@ public String wichLevel;
 //            System.out.print(localisationGoals.toString() + " ici il y a ça:" + levelArray[lineToModify][columnToModify]+"\n");
             levelArray[lineToModify][columnToModify] = Plateau.GOAL;
         }
-
     }
 
     public int isThereGoalHere(String searchedLocalisation){
@@ -276,6 +275,22 @@ public String wichLevel;
         }
         else
             return false;
+    }
+
+
+    public Object clone() {
+        Object o = null;
+        try {
+            // On récupère l'instance à renvoyer par l'appel de la
+            // méthode super.clone()
+            o = super.clone();
+        } catch(CloneNotSupportedException cnse) {
+            // Ne devrait jamais arriver car nous implémentons
+            // l'interface Cloneable
+            cnse.printStackTrace(System.err);
+        }
+        // on renvoie le clone
+        return o;
     }
 
 }

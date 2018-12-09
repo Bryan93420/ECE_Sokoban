@@ -1,8 +1,7 @@
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -14,7 +13,6 @@ public class MenuNiveaux {
     maVuePlateau aze;
     boolean isAlreadyABoardLoaded;
     public MenuNiveaux() {
-
 
         JList displayList = new JList(new File("./Sokoban/lvl").listFiles());
         displayList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -50,7 +48,7 @@ public class MenuNiveaux {
                     //si aucune vue n'a déjà été créée, alors on peut en créer une
                     if (!isAlreadyABoardLoaded) {
                         LevelConfig currentLevel = new LevelConfig(oneFile);
-                        Plateau currentPlateau = new Plateau(currentLevel); // on choisira le niveau qu'on veut (ici le 1)
+                        Plateau currentPlateau = new Plateau(currentLevel, false); // on choisira le niveau qu'on veut (ici le 1)
 
                         if (Main.consoleMode) {
                             currentPlateau.showBoardInConsole(Main.consoleMode);
@@ -71,7 +69,7 @@ public class MenuNiveaux {
                             isAlreadyABoardLoaded = true;
 
                         } else {
-                            aze = new maVuePlateau(currentPlateau);
+                            aze = new maVuePlateau(currentPlateau, false);
                             aze.setNumberOfFirstLevelOnLaunched(numberOfTheLevel);
                             aze.setPathOfFirstLevelLaunched(oneFile);
 
@@ -87,13 +85,22 @@ public class MenuNiveaux {
                                 }
                             };
                             aze.addWindowListener(l);
+//                            aze.addComponentListener();
 //                    Main.consoleMode = true; // force l'affichage de la console même en mode Graphique, très utile pour débug
+
                         }
+                    }
+                    else{
+                        //une instance existe de maVuePlateau existe déjà
+                        System.out.println("on va voir ça: " +aze.pathOfFirstLevelLaunched);
                     }
 
 //                System.out.println("sélectionné: " + oneFile);
+                    return;
                 }
-            });
+            }
+
+            );
         }
         f.pack();
         f.setVisible(true);
@@ -135,4 +142,27 @@ public class MenuNiveaux {
             return this;
         }
     }
+
+
+
+
+
+
+
+
+    /* import java.awt.*;
+import javax.swing.*;
+
+public class TestStopWatch extends JPanel {
+
+public void init() {
+
+
+
+
+}
+
+
+}*/
+
 }
