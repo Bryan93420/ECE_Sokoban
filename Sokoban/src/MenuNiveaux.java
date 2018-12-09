@@ -12,7 +12,7 @@ import javax.swing.filechooser.FileSystemView;
 public class MenuNiveaux {
 
     maVuePlateau aze;
-boolean isAlreadyABoardLoaded;
+    boolean isAlreadyABoardLoaded;
     public MenuNiveaux() {
 
 
