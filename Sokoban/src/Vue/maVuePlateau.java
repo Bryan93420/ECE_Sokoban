@@ -1,3 +1,9 @@
+package Vue;
+
+import Controleur.Main;
+import Controleur.Plateau;
+import Modele.LevelConfig;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

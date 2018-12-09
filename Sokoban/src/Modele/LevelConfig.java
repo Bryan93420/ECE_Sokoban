@@ -1,3 +1,7 @@
+package Modele;
+
+import Controleur.Plateau;
+
 import javax.print.DocFlavor;
 import java.io.*;
 import java.util.ArrayList;
@@ -12,8 +16,10 @@ public class LevelConfig {
 
     public int limColumns;
     public int limLines;
-    protected boolean isPersoExist = false;
-public String wichLevel;
+    public boolean isPersoExist = false;
+    public String wichLevel;
+
+
 
 
 
@@ -91,6 +97,9 @@ public String wichLevel;
 
     public int[] getPersoPosition() {
         return readBoardForSpecificObject(levelArray, Plateau.PERSO);
+    }
+    public int[] getPersoGoalPosition() {
+        return readBoardForSpecificObject(levelArray, Plateau.PERSO_GOAL);
     }
     public int[] getMurPosition(){ return readBoardForSpecificObject(levelArray, Plateau.MUR); }
     public int[] getCaissePosition(){ return readBoardForSpecificObject(levelArray, Plateau.CAISSE); }
@@ -251,9 +260,11 @@ public String wichLevel;
 
     public int countUncompletedGoals(){
 
-        for (String oneGoalPosition: localisationGoals  ) {
+      int  numberOfUncompletedGoals = 0;
 
-            int numberOfUncompletedGoals = 0;
+        for (String oneGoalPosition: localisationGoals ) {
+
+
             String[] parts = oneGoalPosition.split(";"); //les coordonnées d'un goal sont séparées par ; .
             // La fonction split sépare une String (au niveau du séparateur) et génère un tableau
             int lineToModify = Integer.parseInt(parts[0]); // line
@@ -263,10 +274,14 @@ public String wichLevel;
             if (isCompletedGoal == false) {
                 numberOfUncompletedGoals++;
             }
-            System.out.println("nb de goal restants:"+numberOfUncompletedGoals);
-            return numberOfUncompletedGoals;
+
+
         }
-        return -1;
+
+        System.out.println("nb de goal restants:"+numberOfUncompletedGoals);
+        return numberOfUncompletedGoals;
+
+        //return -1;
     }
 
     public boolean isFinishedGame(){

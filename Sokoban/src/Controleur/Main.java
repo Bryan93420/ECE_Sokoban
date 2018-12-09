@@ -1,14 +1,16 @@
-import java.util.Scanner;
+package Controleur;
+
+import Vue.MenuNiveaux;
 
 public class Main {
 
     //    static boolean consoleMode = true;
-    static boolean consoleMode = false;
+    public static boolean consoleMode = false;
 
     public static void main(String[] args) throws Exception {
 
         new MenuNiveaux();
-//        Plateau currentPlateau = new Plateau("esdf"); // on choisira le niveau qu'on veut (ici le 1)
+//        Controleur.Plateau currentPlateau = new Controleur.Plateau("esdf"); // on choisira le niveau qu'on veut (ici le 1)
 /*
         if(consoleMode) {
             currentPlateau.showBoardInConsole(consoleMode);
@@ -28,8 +30,8 @@ public class Main {
             }
         }
         else{
-            new MenuNiveaux();
-//            new  maVuePlateau(currentPlateau);
+            new Vue.MenuNiveaux();
+//            new  Vue.maVuePlateau(currentPlateau);
 //            consoleMode = true; // force l'affichage de la console même en mode Graphique, très utile pour débug
 
     }
