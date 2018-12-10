@@ -26,114 +26,86 @@ public class Plateau implements Cloneable {
 
     public Plateau(LevelConfig myBoard, boolean needACloneOfFisrtInstance) {
 
-        if(needACloneOfFisrtInstance){
-            // si on True, alors c'est qu'on a souhaité relancé la partie
-            //donc on repart avec l'object cloné au 1er lancement
+        if (needACloneOfFisrtInstance) {
+            // si on True, alors c'est qu'on a souhaité relancé la partie donc on repart avec l'object cloné au 1er lancement
             levelConfigBoard = (LevelConfig) myBoard.clone();
             levelConfigBoard_saved = (LevelConfig) myBoard.clone();
-        }
-        else {
+        } else {
             levelConfigBoard = myBoard;
             levelConfigBoard_saved = (LevelConfig) levelConfigBoard.clone();
         }
 
         System.out.println(levelConfigBoard + " et " + levelConfigBoard_saved);
 
-//        levelConfigBoard.wichLevel = a;
         levelConfigBoard.setWichLevel(levelConfigBoard.wichLevel);
-//        levelGamePlate = new LevelConfig();
         System.out.println("sélectionné la: " + levelConfigBoard.wichLevel);
-
     }
-
-
 
     public void moveUp() {
 
         levelConfigBoard.isFinishedGame(); // on check si tous les goals on étés remplis
         int[] positionPerso = levelConfigBoard.getPersoPosition();
-
         int typeObjectAbovePerso = levelConfigBoard.readBoardForSpecificPlace(
                 levelConfigBoard.levelArray, (positionPerso[0] - 1), positionPerso[1]);
         if ((positionPerso[0] - 2) >= 0) {
             int typeObjectAboveObject =
-                levelConfigBoard.readBoardForSpecificPlace(
-                        levelConfigBoard.levelArray,
-                        (positionPerso[0] - 2),
-                        positionPerso[1]);
+                    levelConfigBoard.readBoardForSpecificPlace(
+                            levelConfigBoard.levelArray,
+                            (positionPerso[0] - 2),
+                            positionPerso[1]);
 
-//        System.out.print("ligne:" + positionPerso[0] + " colonnes:" + positionPerso[1]);
-        if ((positionPerso[0] > 0) && (positionPerso[0] - 1 > 0)) { // if Perso on the gameboard and the case above too
+            if ((positionPerso[0] > 0) && (positionPerso[0] - 1 > 0)) { // Si le Perso est sur le plateau
 
-
-
-          //  int typeObjectAbovePersoGoal = levelConfigBoard.readBoardForSpecificPlace(
-            //        levelConfigBoard.levelArray, (positionPersoGoal[0] - 1), positionPersoGoal[1]);
-
-            if (typeObjectAbovePerso == SOL) { //si SOL: on se déplace: intervertion de PERSO et SOL
-                levelConfigBoard.setLevelPlateMove((positionPerso[0] - 1), positionPerso[1], PERSO);
-                levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
-              //  levelConfigBoard.regenerateGoalsPositions();
-                nbPas++;
-            } else if (typeObjectAbovePerso == MUR) { //si MUR, on se déplace: intervertion de PERSO et SOL
-               // levelConfigBoard.regenerateGoalsPositions();
-                nbPas++;
-            } else if (typeObjectAbovePerso == CAISSE) { //si CAISSE, on se déplace: intervertion de PERSO et SOL
-
-//on récupère le type d'objet qu'il y a derrière la caisse. Si c'est un SOL on fait l'action "bouger"
-               //if object above is on the gameboard
-
+                if (typeObjectAbovePerso == SOL) { //si SOL: on se déplace: intervertion de PERSO et SOL
+                    levelConfigBoard.setLevelPlateMove((positionPerso[0] - 1), positionPerso[1], PERSO);
+                    levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
+                    nbPas++;
+                } else if (typeObjectAbovePerso == MUR) { //si MUR, on se déplace: intervertion de PERSO et SOL
+                    // levelConfigBoard.regenerateGoalsPositions();
+                    nbPas++;
+                } else if (typeObjectAbovePerso == CAISSE) { //si CAISSE, on se déplace: intervertion de PERSO et SOL
 
                     if (typeObjectAboveObject != MUR && typeObjectAboveObject != CAISSE) {
 
                         //interdit de déplacer si un mur ou une caisse est derrière
                         //si CAISSE, on se déplace: intervertion de PERSO et SOL
 
-                        if(levelConfigBoard.levelArray[(positionPerso[0] - 2)][(positionPerso[1])] == GOAL){
+                        if (levelConfigBoard.levelArray[(positionPerso[0] - 2)][(positionPerso[1])] == GOAL) {
                             //Si l'objet derrière la caisse est un BUT,
                             // alors on met la caisse sur le but puis on fixe cette caisse a jamais
                             //pour cela on modifie le  tableau localisationGoals[Y_caisse][X_caisse]
 
                             int indexMatchedWithLocalisationGoals = levelConfigBoard.isThereGoalHere(
-                                    (positionPerso[0] - 2) +";"+ (positionPerso[1]) + ";false");
+                                    (positionPerso[0] - 2) + ";" + (positionPerso[1]) + ";false");
 
-                            System.out.print("Cet index:"+indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
+                            System.out.print("Cet index:" + indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
 
-                                if(indexMatchedWithLocalisationGoals >= 0) {// si le nombre correspond a
+                            if (indexMatchedWithLocalisationGoals >= 0) {// si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
-                                   // int numberofGoal = levelConfigBoard.countUncompletedGoals();
+                                // int numberofGoal = levelConfigBoard.countUncompletedGoals();
 //on remplace le GOAL par un CAISSE_PLACEE
-                                    levelConfigBoard.localisationGoals.set(
-                                            indexMatchedWithLocalisationGoals,
-                                            (positionPerso[0] - 2) + ";" + ((positionPerso[1]) + ";true"));
+                                levelConfigBoard.localisationGoals.set(
+                                        indexMatchedWithLocalisationGoals,
+                                        (positionPerso[0] - 2) + ";" + ((positionPerso[1]) + ";true"));
 
-                                    //move the perso on the up case
-                                    levelConfigBoard.setLevelPlateMove((positionPerso[0]) - 2, positionPerso[1], CAISSE_PLACEE);
-                                    levelConfigBoard.setLevelPlateMove((positionPerso[0] - 1), positionPerso[1], PERSO);
-                                    levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
-                                }
+                                levelConfigBoard.setLevelPlateMove((positionPerso[0]) - 2, positionPerso[1], CAISSE_PLACEE);
+                                levelConfigBoard.setLevelPlateMove((positionPerso[0] - 1), positionPerso[1], PERSO);
+                                levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
+                            }
 
-
-                        }
-                        else{
+                        } else {
                             //move the perso on the up case
                             levelConfigBoard.setLevelPlateMove((positionPerso[0]) - 2, positionPerso[1], CAISSE);
                             levelConfigBoard.setLevelPlateMove((positionPerso[0] - 1), positionPerso[1], PERSO);
                             levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
-                           // levelConfigBoard.regenerateGoalsPositions();
+                            // levelConfigBoard.regenerateGoalsPositions();
                         }
-
-
-
-
-
                         showBoardInConsole(Main.consoleMode);
                         System.out.print("You moved up\n");
                         nbPas++;
                         nbPousses++;
                     }
-                }
-                else {
+                } else {
                     System.out.print("You can't move this box like this");
                     //levelConfigBoard.regenerateGoalsPositions();
                 }
@@ -151,16 +123,10 @@ public class Plateau implements Cloneable {
                     levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], GOAL);
                     nbPas++;
 */
-            }
-            else {
+            } else {
 //                regenerateGoalsPositions();
                 System.out.print("You've reached the edge ! You can't move up anymore\n");
             }
-
-
-
-
-
         }
     }
 
@@ -249,14 +215,13 @@ public class Plateau implements Cloneable {
         if ((positionPerso[0] > 0) && (positionPerso[0] + 1 > 0)) { // if Perso on the gameboard and the case above too
 
 
-
             if (typeObjectBelowPerso == SOL) { //si SOL: on se déplace: intervertion de PERSO et SOL
                 levelConfigBoard.setLevelPlateMove((positionPerso[0] + 1), positionPerso[1], PERSO);
                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
-               // levelConfigBoard.regenerateGoalsPositions();
+                // levelConfigBoard.regenerateGoalsPositions();
                 nbPas++;
             } else if (typeObjectBelowPerso == MUR) { //si MUR, on se déplace: intervertion de PERSO et SOL
-             //   levelConfigBoard.regenerateGoalsPositions();
+                //   levelConfigBoard.regenerateGoalsPositions();
                 nbPas++;
             } else if (typeObjectBelowPerso == CAISSE) { //si CAISSE, on se déplace: intervertion de PERSO et SOL
 
@@ -268,17 +233,17 @@ public class Plateau implements Cloneable {
                         //interdit de déplacer si un mur ou une caisse est derrière
                         //si CAISSE, on se déplace: intervertion de PERSO et SOL
 
-                        if(levelConfigBoard.levelArray[(positionPerso[0] + 2)][(positionPerso[1])] == GOAL){
+                        if (levelConfigBoard.levelArray[(positionPerso[0] + 2)][(positionPerso[1])] == GOAL) {
                             //Si l'objet derrière la caisse est un BUT,
                             // alors on met la caisse sur le but puis on fixe cette caisse a jamais
                             //pour cela on modifie le  tableau localisationGoals[Y_caisse][X_caisse]
 
                             int indexMatchedWithLocalisationGoals = levelConfigBoard.isThereGoalHere(
-                                    (positionPerso[0] + 2) +";"+ (positionPerso[1]) + ";false");
+                                    (positionPerso[0] + 2) + ";" + (positionPerso[1]) + ";false");
 
-                            System.out.print("Cet index:"+indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
+                            System.out.print("Cet index:" + indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
 
-                            if(indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
+                            if (indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
 //on remplace le GOAL par un CAISSE_PLACEE
                                 levelConfigBoard.localisationGoals.set(
@@ -290,17 +255,13 @@ public class Plateau implements Cloneable {
                                 levelConfigBoard.setLevelPlateMove((positionPerso[0] + 1), positionPerso[1], PERSO);
                                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
                             }
-                        }
-                        else{
+                        } else {
                             //move the perso on the up case
                             levelConfigBoard.setLevelPlateMove((positionPerso[0]) + 2, positionPerso[1], CAISSE);
                             levelConfigBoard.setLevelPlateMove((positionPerso[0] + 1), positionPerso[1], PERSO);
                             levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
-                          //  levelConfigBoard.regenerateGoalsPositions();
+                            //  levelConfigBoard.regenerateGoalsPositions();
                         }
-
-
-
 
 
                         showBoardInConsole(Main.consoleMode);
@@ -308,10 +269,9 @@ public class Plateau implements Cloneable {
                         nbPas++;
                         nbPousses++;
                     }
-                }
-                else {
+                } else {
                     System.out.print("You can't move this box like this");
-                   // levelConfigBoard.regenerateGoalsPositions();
+                    // levelConfigBoard.regenerateGoalsPositions();
                 }
             } else if (typeObjectBelowPerso == GOAL && typeObjectAboveObject != MUR) { //si GOAL, on déplace uniquement le Perso
                 // SURTOUT ON NE regenerateGoalsPositions(); PAS !!! Sinon ça efface le perso,
@@ -319,12 +279,10 @@ public class Plateau implements Cloneable {
                 levelConfigBoard.setLevelPlateMove((positionPerso[0] + 2), positionPerso[1], PERSO);
                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
                 nbPas++;
-            }
-            else if  (typeObjectBelowPerso == CAISSE_PLACEE) {
+            } else if (typeObjectBelowPerso == CAISSE_PLACEE) {
                 System.out.print("You can't move a well placed box\n");
 
-            }
-            else {
+            } else {
 //                regenerateGoalsPositions();
                 System.out.print("You've reached the edge ! You can't move up anymore\n");
             }
@@ -348,11 +306,10 @@ public class Plateau implements Cloneable {
         if ((positionPerso[1] > 0) && (positionPerso[1] - 1 > 0)) { // if Perso on the gameboard and the case above too
 
 
-
             if (typeObjectLeftPerso == SOL) { //si SOL: on se déplace: intervertion de PERSO et SOL
                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1] - 1, PERSO);
                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
-               // levelConfigBoard.regenerateGoalsPositions();
+                // levelConfigBoard.regenerateGoalsPositions();
                 nbPas++;
             } else if (typeObjectLeftPerso == MUR) { //si MUR, on se déplace: intervertion de PERSO et SOL
                 //levelConfigBoard.regenerateGoalsPositions();
@@ -367,17 +324,17 @@ public class Plateau implements Cloneable {
                         //interdit de déplacer si un mur ou une caisse est derrière
                         //si CAISSE, on se déplace: intervertion de PERSO et SOL
 
-                        if(levelConfigBoard.levelArray[(positionPerso[0])][(positionPerso[1] - 2)] == GOAL){
+                        if (levelConfigBoard.levelArray[(positionPerso[0])][(positionPerso[1] - 2)] == GOAL) {
                             //Si l'objet derrière la caisse est un BUT,
                             // alors on met la caisse sur le but puis on fixe cette caisse a jamais
                             //pour cela on modifie le  tableau localisationGoals[Y_caisse][X_caisse]
 
                             int indexMatchedWithLocalisationGoals = levelConfigBoard.isThereGoalHere(
-                                    (positionPerso[0]) +";"+ (positionPerso[1] - 2) + ";false");
+                                    (positionPerso[0]) + ";" + (positionPerso[1] - 2) + ";false");
 
-                            System.out.print("Cet index:"+indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
+                            System.out.print("Cet index:" + indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
 
-                            if(indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
+                            if (indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
 //on remplace le GOAL par un CAISSE_PLACEE
                                 levelConfigBoard.localisationGoals.set(
@@ -389,17 +346,13 @@ public class Plateau implements Cloneable {
                                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1] - 1, PERSO);
                                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
                             }
-                        }
-                        else{
+                        } else {
                             //move the perso on the up case
                             levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1] - 2, CAISSE);
                             levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1] - 1, PERSO);
                             levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
-                          //  levelConfigBoard.regenerateGoalsPositions();
+                            //  levelConfigBoard.regenerateGoalsPositions();
                         }
-
-
-
 
 
                         showBoardInConsole(Main.consoleMode);
@@ -407,23 +360,20 @@ public class Plateau implements Cloneable {
                         nbPas++;
                         nbPousses++;
                     }
-                }
-                else {
+                } else {
                     System.out.print("You can't move this box like this");
-                   // levelConfigBoard.regenerateGoalsPositions();
+                    // levelConfigBoard.regenerateGoalsPositions();
                 }
-            } else if (typeObjectLeftPerso == GOAL  && typeObjectAboveObject != MUR) { //si GOAL, on déplace uniquement le Perso
+            } else if (typeObjectLeftPerso == GOAL && typeObjectAboveObject != MUR) { //si GOAL, on déplace uniquement le Perso
                 // SURTOUT ON NE regenerateGoalsPositions(); PAS !!! Sinon ça efface le perso,
                 // car il se trouve sur les coordonnées originales d'un goal
                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1] - 2, PERSO);
                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
                 nbPas++;
-            }
-            else if  (typeObjectLeftPerso == CAISSE_PLACEE) {
+            } else if (typeObjectLeftPerso == CAISSE_PLACEE) {
                 System.out.print("You can't move a well placed box\n");
 
-            }
-            else {
+            } else {
 //                regenerateGoalsPositions();
                 System.out.print("You've reached the edge ! You can't move up anymore\n");
             }
@@ -505,11 +455,10 @@ public class Plateau implements Cloneable {
         if ((positionPerso[1] > 0) && (positionPerso[1] + 1 > 0)) { // if Perso on the gameboard and the case above too
 
 
-
             if (typeObjectLeftPerso == SOL) { //si SOL: on se déplace: intervertion de PERSO et SOL
                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1] + 1, PERSO);
                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
-             //   levelConfigBoard.regenerateGoalsPositions();
+                //   levelConfigBoard.regenerateGoalsPositions();
                 nbPas++;
             } else if (typeObjectLeftPerso == MUR) { //si MUR, on se déplace: intervertion de PERSO et SOL
                 levelConfigBoard.regenerateGoalsPositions();
@@ -523,17 +472,17 @@ public class Plateau implements Cloneable {
                         //interdit de déplacer si un mur ou une caisse est derrière
                         //si CAISSE, on se déplace: intervertion de PERSO et SOL
 
-                        if(levelConfigBoard.levelArray[(positionPerso[0])][(positionPerso[1] + 2)] == GOAL){
+                        if (levelConfigBoard.levelArray[(positionPerso[0])][(positionPerso[1] + 2)] == GOAL) {
                             //Si l'objet derrière la caisse est un BUT,
                             // alors on met la caisse sur le but puis on fixe cette caisse a jamais
                             //pour cela on modifie le  tableau localisationGoals[Y_caisse][X_caisse]
 
                             int indexMatchedWithLocalisationGoals = levelConfigBoard.isThereGoalHere(
-                                    (positionPerso[0]) +";"+ (positionPerso[1] + 2) + ";false");
+                                    (positionPerso[0]) + ";" + (positionPerso[1] + 2) + ";false");
 
-                            System.out.print("Cet index:"+indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
+                            System.out.print("Cet index:" + indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
 
-                            if(indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
+                            if (indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
 //on remplace le GOAL par un CAISSE_PLACEE
                                 levelConfigBoard.localisationGoals.set(
@@ -545,17 +494,13 @@ public class Plateau implements Cloneable {
                                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1] + 1, PERSO);
                                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
                             }
-                        }
-                        else{
+                        } else {
                             //move the perso on the up case
                             levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1] + 2, CAISSE);
                             levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1] + 1, PERSO);
                             levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
-                         //   levelConfigBoard.regenerateGoalsPositions();
+                            //   levelConfigBoard.regenerateGoalsPositions();
                         }
-
-
-
 
 
                         showBoardInConsole(Main.consoleMode);
@@ -563,23 +508,20 @@ public class Plateau implements Cloneable {
                         nbPas++;
                         nbPousses++;
                     }
-                }
-                else {
+                } else {
                     System.out.print("You can't move this box like this");
                     levelConfigBoard.regenerateGoalsPositions();
                 }
-            } else if (typeObjectLeftPerso == GOAL  && typeObjectAboveObject != MUR) { //si GOAL, on déplace uniquement le Perso
+            } else if (typeObjectLeftPerso == GOAL && typeObjectAboveObject != MUR) { //si GOAL, on déplace uniquement le Perso
                 // SURTOUT ON NE regenerateGoalsPositions(); PAS !!! Sinon ça efface le perso,
                 // car il se trouve sur les coordonnées originales d'un goal
                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1] + 2, PERSO);
                 levelConfigBoard.setLevelPlateMove((positionPerso[0]), positionPerso[1], SOL);
                 nbPas++;
-            }
-            else if  (typeObjectLeftPerso == CAISSE_PLACEE) {
+            } else if (typeObjectLeftPerso == CAISSE_PLACEE) {
                 System.out.print("You can't move a well placed box\n");
 
-            }
-            else {
+            } else {
 //                regenerateGoalsPositions();
                 System.out.print("You've reached the edge ! You can't move up anymore\n");
             }
@@ -650,22 +592,20 @@ public class Plateau implements Cloneable {
 
         if (chaineLue.equals("z")) {
             moveUp();
-            System.out.println("Moves :" +nbPas+ "\nPushes: "+nbPousses);
+            System.out.println("Moves :" + nbPas + "\nPushes: " + nbPousses);
         } else if (chaineLue.equals("q")) {
             moveLeft();
-            System.out.println("Moves :" +nbPas+ "\nPushes: "+nbPousses);
+            System.out.println("Moves :" + nbPas + "\nPushes: " + nbPousses);
         } else if (chaineLue.equals("s")) {
             moveBottom();
-            System.out.println("Moves :" +nbPas+ "\nPushes: "+nbPousses);
+            System.out.println("Moves :" + nbPas + "\nPushes: " + nbPousses);
         } else if (chaineLue.equals("d")) {
             moveRight();
-            System.out.println("Moves :" +nbPas+ "\nPushes: "+nbPousses);
-        }
-        else {
+            System.out.println("Moves :" + nbPas + "\nPushes: " + nbPousses);
+        } else {
             System.out.println("Invalid move !!!");
         }
     }
-
 
 
     public int getNbPas() {
@@ -675,7 +615,6 @@ public class Plateau implements Cloneable {
     public int getNbPousses() {
         return nbPousses;
     }
-
 
 
     public void showBoardInConsole(boolean isConsoleMode) {
@@ -701,7 +640,7 @@ public class Plateau implements Cloneable {
         this.nbPousses = nbPousses;
     }
 
-    public void restartGame() throws IOException {
+    public void restartGame() {
 
         watch.timer.stop();
         watch.timer.reset();
@@ -713,8 +652,8 @@ public class Plateau implements Cloneable {
 //        levelArray = savedBasePlateau.clone();
 
 //on clone le tableau sauvegardé au lancement du jeu. On le réinjecte dans le tableau qui sert de plateau
-        for( int i=0 ; i < levelConfigBoard.savedBasePlateau.length; i++) {
-            for( int j=0 ; j < levelConfigBoard.savedBasePlateau[i].length; j++) {
+        for (int i = 0; i < levelConfigBoard.savedBasePlateau.length; i++) {
+            for (int j = 0; j < levelConfigBoard.savedBasePlateau[i].length; j++) {
                 levelConfigBoard.levelArray[i][j] = levelConfigBoard.savedBasePlateau[i][j];
             }
         }
@@ -725,16 +664,13 @@ public class Plateau implements Cloneable {
     }
 
 
-
     public Object clone() {
         Object o = null;
         try {
-            // On récupère l'instance à renvoyer par l'appel de la
-            // méthode super.clone()
+            // On récupère l'instance à renvoyer par l'appel de la méthode super.clone()
             o = super.clone();
-        } catch(CloneNotSupportedException cnse) {
-            // Ne devrait jamais arriver car nous implémentons
-            // l'interface Cloneable
+        } catch (CloneNotSupportedException cnse) {
+            // Ne devrait jamais arriver car on implémente l'interface Cloneable
             cnse.printStackTrace(System.err);
         }
         // on renvoie le clone

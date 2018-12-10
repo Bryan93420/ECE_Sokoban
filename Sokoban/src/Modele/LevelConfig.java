@@ -2,7 +2,6 @@ package Modele;
 
 import Controleur.Plateau;
 
-import javax.print.DocFlavor;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +12,10 @@ public class LevelConfig implements Cloneable{
     public int[][] levelArray;
     public int[][] savedBasePlateau;
     public ArrayList<String> localisationGoals, savedLocalisationGoals;
-
     public int limColumns;
     public int limLines;
     public boolean isPersoExist = false;
     public String wichLevel;
-
-
-
-
 
 
     public LevelConfig(String aqzsed){
@@ -49,15 +43,13 @@ public class LevelConfig implements Cloneable{
             }
 
             savedLocalisationGoals = (ArrayList<String>) localisationGoals.clone();
-//            fin_partie = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    public int[] readBoardForSpecificObject(int[][] levelGameBoard,
-                                            int whichObjectLookingFor){
+    public int[] readBoardForSpecificObject(int[][] levelGameBoard, int whichObjectLookingFor){
 
 
         int[] positionOfObject = new int[2];
@@ -70,22 +62,17 @@ public class LevelConfig implements Cloneable{
                 if(levelGameBoard[i][j] == whichObjectLookingFor) {
                     positionOfObject[0] = i;
                     positionOfObject[1] = j;
-//                    System.out.print("i=" + positionOfObject[0] +
-//                            "\nj="+positionOfObject[1]);
                     return positionOfObject;
                 }
             }
         }
-
         return positionOfObject;
     }
 
 
-    public int readBoardForSpecificPlace(int[][] levelGameBoard,
-                                         int ligne_i, int column_j){
+    public int readBoardForSpecificPlace(int[][] levelGameBoard, int ligne_i, int column_j){
 
         int typeOfObject = -1;
-        //System.out.print(ligne_i + "|" + column_j);
         if (levelGameBoard[ligne_i][column_j] >= 0) {
             typeOfObject = levelGameBoard[ligne_i][column_j];
             return typeOfObject;
@@ -115,8 +102,7 @@ public class LevelConfig implements Cloneable{
 
     public int[][] loadLevelFromFile(String aqs) throws  IOException {
 
-//        "./Sokoban/levels/level1.txt"
-//        System.out.println("sdcx: " + aqs);
+
 //ici on vérifie l'intégrité d'un fichier.txt plateau. On vérifie que c'est bien un rectangle parfait
         FileInputStream azer = new FileInputStream(aqs);
         BufferedReader poiu = new BufferedReader(new InputStreamReader(azer));
@@ -125,10 +111,8 @@ public class LevelConfig implements Cloneable{
         while ( (aaa = poiu.readLine()) != null ){
             countFileSizes.add(aaa.length());
         }
-//        System.out.print("\n:" + countFileSizes.size() + " taille=" + countFileSizes.get(0) +"\n");
 
         limLines = countFileSizes.size() ;
-
         for ( int i = 0; i < countFileSizes.size() ; i++){
 
             if(countFileSizes.get(0) !=  countFileSizes.get(i)){
@@ -143,19 +127,15 @@ public class LevelConfig implements Cloneable{
         azer.close();
         poiu.close();
 
-
-//        System.out.print("lignes :" + limLines + "\ncolonnes : " + limColumns + "\n");
         levelArray = new int[limLines][limColumns];
-
+        //Puis on remplit un tableau qui servira de plateau de jeu
         FileInputStream in = new FileInputStream(aqs);
         BufferedReader flot = new BufferedReader(new InputStreamReader(in));
         String readLine;
         int i = 0, j;
 
         while( i < limLines && ( (readLine = flot.readLine() ) != null )){
-
             for (j = 0; j < readLine.length() ; j++) {
-
                 switch (readLine.charAt(j)) {
 
                     case '5':
@@ -193,22 +173,16 @@ public class LevelConfig implements Cloneable{
                         break;
                 }//switch
 
-            }//for i
+            }//for j
             i++;
 
-        } // while j<limLines AND readBuffer not empty
-
-
-//        internalCurrentPlateau.initPlateau(levelArray);
+        } // while i<limLines et que buffer n'est pas vide
+//on ferme le buffer
         in.close();
         flot.close();
 
         return levelArray;
-    }//initLevel
-
-//    public int[][] getLevelArray() {
-//        return this.levelArray;
-//    }
+    }
 
 
     public int[][] getLevelArray() {
@@ -223,9 +197,6 @@ public class LevelConfig implements Cloneable{
         return limLines;
     }
 
-
-
-
     //fonction qui replace tous les goals à l'endroits où il étaient au lancement du jeu.
     // le tableau localisationGoals est rempli au lancement du jeu et contient toutes les coordonnées des goals
     // dans un tableau de String
@@ -236,8 +207,6 @@ public class LevelConfig implements Cloneable{
             // La fonction split sépare une String (au niveau du séparateur) et génère un tableau
             int lineToModify = Integer.parseInt(parts[0]); // line
             int columnToModify = Integer.parseInt(parts[1]); // column
-
-//            System.out.print(localisationGoals.toString() + " ici il y a ça:" + levelArray[lineToModify][columnToModify]+"\n");
             levelArray[lineToModify][columnToModify] = Plateau.GOAL;
         }
     }
@@ -247,7 +216,7 @@ public class LevelConfig implements Cloneable{
 
         for (String oneGoalPosition: localisationGoals  ){
             if( oneGoalPosition.equals(searchedLocalisation)){
-                System.out.println(oneGoalPosition.toString());
+                System.out.println(oneGoalPosition);
 
                 int index = localisationGoals.indexOf(oneGoalPosition);
                 System.out.print("\nindex:" + index+"\n");
@@ -258,12 +227,11 @@ public class LevelConfig implements Cloneable{
     }
 
 
-    public int countUncompletedGoals(){
+    public int countUncompletedGoals() {
 
-      int  numberOfUncompletedGoals = 0;
+        int numberOfUncompletedGoals = 0;
 
-        for (String oneGoalPosition: localisationGoals ) {
-
+        for (String oneGoalPosition : localisationGoals) {
 
             String[] parts = oneGoalPosition.split(";"); //les coordonnées d'un goal sont séparées par ; .
             // La fonction split sépare une String (au niveau du séparateur) et génère un tableau
@@ -274,39 +242,29 @@ public class LevelConfig implements Cloneable{
             if (isCompletedGoal == false) {
                 numberOfUncompletedGoals++;
             }
-
-
         }
-
-        System.out.println("nb de goal restants:"+numberOfUncompletedGoals);
+        System.out.println("nb de goal restants:" + numberOfUncompletedGoals);
         return numberOfUncompletedGoals;
-
-        //return -1;
     }
 
-    public boolean isFinishedGame(){
-        if(countUncompletedGoals() <= 0) {
+    public boolean isFinishedGame() {
+        if (countUncompletedGoals() <= 0) {
             System.out.print("OKAY GAGNE");
             return true;
-        }
-        else
+        } else
             return false;
     }
-
 
     public Object clone() {
         Object o = null;
         try {
-            // On récupère l'instance à renvoyer par l'appel de la
-            // méthode super.clone()
+            // On récupère l'instance à renvoyer par l'appel de la méthode super.clone()
             o = super.clone();
         } catch(CloneNotSupportedException cnse) {
-            // Ne devrait jamais arriver car nous implémentons
-            // l'interface Cloneable
+            // Ne devrait jamais arriver car on implémente l'interface Cloneable
             cnse.printStackTrace(System.err);
         }
         // on renvoie le clone
         return o;
     }
-
 }
