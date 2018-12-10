@@ -10,33 +10,30 @@ import java.awt.event.*;
 import java.io.IOException;
 
 public class maVuePlateau extends JFrame implements KeyListener, ActionListener {
-    JLabel labelTemps, labelScore, labelViewMoves, labelViewPushes;
+    private JLabel labelTemps, labelScore, labelViewMoves, labelViewPushes;
     private Plateau currentPlateau, currentPlateau_saved;
-    JPanel globalPanel;
-    JMenuBar menubar;
-    JMenuItem optionRestart;
-    JMenuItem optionPause;
-    JMenu menuGameOptions;
+    private JPanel globalPanel;
+    private JMenuBar menubar;
+    private JMenuItem optionRestart;
+    private JMenuItem optionPause;
+    private JMenu menuGameOptions;
 
-    ImageIcon imageSol;
-    ImageIcon imageMur;
-    ImageIcon imageCAISSE;
-    ImageIcon imageCAISSE_PLACEE;
-    ImageIcon imageGOAL;
-    ImageIcon imagePERSO;
-    ImageIcon imagePERSO_GOAL;
+    private ImageIcon imageSol;
+    private ImageIcon imageMur;
+    private ImageIcon imageCAISSE;
+    private ImageIcon imageCAISSE_PLACEE;
+    private ImageIcon imageGOAL;
+    private ImageIcon imagePERSO;
+    private ImageIcon imagePERSO_GOAL;
 
-    int numberOfFirstLevelOnLaunched;
+    private int numberOfFirstLevelOnLaunched;
     String pathOfFirstLevelLaunched; // contient le chemin du niveau chargé, utile pour restart une partie
-    int score;
+    private int score;
 
 
     public maVuePlateau(Plateau plateau, boolean needACloneOfFisrtInstance, int Score) {
 
-
         score = Score;
-
-        System.out.println("mon Score : " + score);
         globalPanel = new JPanel();
 
         if (needACloneOfFisrtInstance) {
@@ -340,7 +337,11 @@ public class maVuePlateau extends JFrame implements KeyListener, ActionListener 
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    }
 
+
+    public String getPathOfFirstLevelLaunched() {
+        return pathOfFirstLevelLaunched;
     }
 }
 

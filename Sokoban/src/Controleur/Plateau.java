@@ -8,13 +8,6 @@ import java.util.ArrayList;
 
 public class Plateau implements Cloneable {
 
-    public LevelConfig levelConfigBoard, levelConfigBoard_saved;
-    private int nbPas;
-    private int nbPousses;
-    public boolean fin_partie = false;
-
-    public StopWatchRunner watch;
-
     public static final int SOL = 0;
     public static final int MUR = 1;
     public static final int CAISSE = 2;
@@ -22,6 +15,12 @@ public class Plateau implements Cloneable {
     public static final int GOAL = 4;
     public static final int PERSO = 5;
     public static final int PERSO_GOAL = 6;
+
+    public LevelConfig levelConfigBoard, levelConfigBoard_saved;
+    private int nbPas;
+    private int nbPousses;
+    public boolean fin_partie = false;
+    public StopWatchRunner watch;
 
 
     public Plateau(LevelConfig myBoard, boolean needACloneOfFisrtInstance) {
@@ -35,10 +34,7 @@ public class Plateau implements Cloneable {
             levelConfigBoard_saved = (LevelConfig) levelConfigBoard.clone();
         }
 
-        System.out.println(levelConfigBoard + " et " + levelConfigBoard_saved);
-
         levelConfigBoard.setWichLevel(levelConfigBoard.wichLevel);
-        System.out.println("sélectionné la: " + levelConfigBoard.wichLevel);
     }
 
     public void moveUp() {
@@ -77,8 +73,6 @@ public class Plateau implements Cloneable {
 
                             int indexMatchedWithLocalisationGoals = levelConfigBoard.isThereGoalHere(
                                     (positionPerso[0] - 2) + ";" + (positionPerso[1]) + ";false");
-
-                            System.out.print("Cet index:" + indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
 
                             if (indexMatchedWithLocalisationGoals >= 0) {// si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
@@ -211,7 +205,6 @@ public class Plateau implements Cloneable {
                         levelConfigBoard.levelArray,
                         (positionPerso[0] + 2),
                         positionPerso[1]);
-//        System.out.print("ligne:" + positionPerso[0] + " colonnes:" + positionPerso[1]);
         if ((positionPerso[0] > 0) && (positionPerso[0] + 1 > 0)) { // if Perso on the gameboard and the case above too
 
 
@@ -240,8 +233,6 @@ public class Plateau implements Cloneable {
 
                             int indexMatchedWithLocalisationGoals = levelConfigBoard.isThereGoalHere(
                                     (positionPerso[0] + 2) + ";" + (positionPerso[1]) + ";false");
-
-                            System.out.print("Cet index:" + indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
 
                             if (indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
@@ -302,7 +293,6 @@ public class Plateau implements Cloneable {
                         levelConfigBoard.levelArray,
                         (positionPerso[0]),
                         positionPerso[1] - 2);
-//        System.out.print("ligne:" + positionPerso[0] + " colonnes:" + positionPerso[1]);
         if ((positionPerso[1] > 0) && (positionPerso[1] - 1 > 0)) { // if Perso on the gameboard and the case above too
 
 
@@ -332,7 +322,6 @@ public class Plateau implements Cloneable {
                             int indexMatchedWithLocalisationGoals = levelConfigBoard.isThereGoalHere(
                                     (positionPerso[0]) + ";" + (positionPerso[1] - 2) + ";false");
 
-                            System.out.print("Cet index:" + indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
 
                             if (indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
@@ -480,7 +469,6 @@ public class Plateau implements Cloneable {
                             int indexMatchedWithLocalisationGoals = levelConfigBoard.isThereGoalHere(
                                     (positionPerso[0]) + ";" + (positionPerso[1] + 2) + ";false");
 
-                            System.out.print("Cet index:" + indexMatchedWithLocalisationGoals + " correspond a la case qu'on va définir comme CAISSE_GOAL");
 
                             if (indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
@@ -592,18 +580,18 @@ public class Plateau implements Cloneable {
 
         if (chaineLue.equals("z")) {
             moveUp();
-            System.out.println("Moves :" + nbPas + "\nPushes: " + nbPousses);
+            System.out.println("Pas :" + nbPas + "\nPousses: " + nbPousses);
         } else if (chaineLue.equals("q")) {
             moveLeft();
-            System.out.println("Moves :" + nbPas + "\nPushes: " + nbPousses);
+            System.out.println("Pas :" + nbPas + "\nPousses: " + nbPousses);
         } else if (chaineLue.equals("s")) {
             moveBottom();
-            System.out.println("Moves :" + nbPas + "\nPushes: " + nbPousses);
+            System.out.println("Pas :" + nbPas + "\nPousses: " + nbPousses);
         } else if (chaineLue.equals("d")) {
             moveRight();
-            System.out.println("Moves :" + nbPas + "\nPushes: " + nbPousses);
+            System.out.println("Pas :" + nbPas + "\nPousses: " + nbPousses);
         } else {
-            System.out.println("Invalid move !!!");
+            System.out.println("Mouvement invalide !!!");
         }
     }
 
@@ -621,12 +609,9 @@ public class Plateau implements Cloneable {
 
         if (isConsoleMode) {
             int[][] tempArray = levelConfigBoard.levelArray;
-//        System.out.print("longeur: " + tempArray);
             for (int i = 0; i < tempArray.length; i++) {
                 for (int j = 0; j < tempArray[i].length; j++) {
-                    System.out.print(tempArray[i][j]);
                 }
-                System.out.print("\n");
             }
         }
     }
@@ -649,7 +634,6 @@ public class Plateau implements Cloneable {
         setNbPas(0);
         setNbPousses(0);
         levelConfigBoard.isPersoExist = false;
-//        levelArray = savedBasePlateau.clone();
 
 //on clone le tableau sauvegardé au lancement du jeu. On le réinjecte dans le tableau qui sert de plateau
         for (int i = 0; i < levelConfigBoard.savedBasePlateau.length; i++) {
