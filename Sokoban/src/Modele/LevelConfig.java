@@ -9,13 +9,13 @@ import java.util.List;
 
 public class LevelConfig implements Cloneable{
 
-    public int[][] levelArray;
-    public int[][] savedBasePlateau;
-    public ArrayList<String> localisationGoals, savedLocalisationGoals;
-    public int limColumns;
-    public int limLines;
+    private int[][] levelArray;
+    private int[][] savedBasePlateau;
+    private ArrayList<String> localisationGoals, savedLocalisationGoals;
+    private int limColumns;
+    private int limLines;
     public boolean isPersoExist = false;
-    public String wichLevel;
+    private String wichLevel;
 
 
     public LevelConfig(String aqzsed){
@@ -267,4 +267,27 @@ public class LevelConfig implements Cloneable{
         // on renvoie le clone
         return o;
     }
+
+
+    public int[][] getSavedBasePlateau() {
+        return savedBasePlateau;
+    }
+
+
+    public String getWichLevel() {
+        return wichLevel;
+    }
+
+    public void setLocalisationGoals(ArrayList<String> localisationGoals) {
+        this.localisationGoals = localisationGoals;
+    }
+
+    public ArrayList<String> getLocalisationGoals() {
+        return localisationGoals;
+    }
+
+    public ArrayList<String> getSavedLocalisationGoals() {
+        return savedLocalisationGoals;
+    }
+
 }

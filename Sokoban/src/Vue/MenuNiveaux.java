@@ -15,7 +15,7 @@ import javax.swing.filechooser.FileSystemView;
 
 public class MenuNiveaux {
 
-    maVuePlateau aze;
+    private maVuePlateau aze;
 
     public MenuNiveaux() {
 

@@ -95,7 +95,7 @@ public class maVuePlateau extends JFrame implements KeyListener, ActionListener 
                 dispose();
 //                on créer un nouvel objet identique à ce qu'on avait au départ
                 System.out.println("restart: " + currentPlateau + " et " +
-                        currentPlateau_saved + "===" + currentPlateau_saved.levelConfigBoard.limLines);
+                        currentPlateau_saved + "===" + currentPlateau_saved.levelConfigBoard.getLimLines());
                 LevelConfig newLevel = new LevelConfig(pathOfFirstLevelLaunched);
                 Plateau newPlateau = new Plateau(newLevel, false);
                 maVuePlateau newViewPlateau = new maVuePlateau(newPlateau, true, score);
@@ -112,13 +112,13 @@ public class maVuePlateau extends JFrame implements KeyListener, ActionListener 
                 currentPlateau.watch.timer.suspend();
                 //oui, on a besoin de mettre en pause
                 JFrame frame = new JFrame("Parent");
-                frame.setSize(Math.round(26 * currentPlateau.levelConfigBoard.limLines),
-                        Math.round(26 * currentPlateau.levelConfigBoard.limColumns));
+                frame.setSize(Math.round(26 * currentPlateau.levelConfigBoard.getLimLines()),
+                        Math.round(26 * currentPlateau.levelConfigBoard.getLimColumns()));
                 frame.setVisible(true);
 
                 final JDialog dialog = new JDialog(frame, "Child", true);
-                dialog.setSize(Math.round(26 * currentPlateau.levelConfigBoard.limLines),
-                        Math.round(26 * currentPlateau.levelConfigBoard.limColumns));
+                dialog.setSize(Math.round(26 * currentPlateau.levelConfigBoard.getLimLines()),
+                        Math.round(26 * currentPlateau.levelConfigBoard.getLimColumns()));
                 dialog.setLocationRelativeTo(frame);
                 JButton button = new JButton("Reprendre le jeu");
                 button.addActionListener(new ActionListener() {
@@ -141,7 +141,7 @@ public class maVuePlateau extends JFrame implements KeyListener, ActionListener 
         //désactiver resize de la fenêtre
         this.setResizable(false);
         this.addKeyListener(this);
-        fillPlayableArray(currentPlateau.levelConfigBoard.levelArray);
+        fillPlayableArray(currentPlateau.levelConfigBoard.getLevelArray());
         this.setVisible(true);
     }
 
@@ -226,25 +226,25 @@ public class maVuePlateau extends JFrame implements KeyListener, ActionListener 
             case KeyEvent.VK_UP:
                 System.out.println("haut");
                 currentPlateau.moveUp();
-                fillPlayableArray(currentPlateau.levelConfigBoard.levelArray);
+                fillPlayableArray(currentPlateau.levelConfigBoard.getLevelArray());
                 break;
 
             case KeyEvent.VK_DOWN:
                 System.out.println("bas");
                 currentPlateau.moveBottom();
-                fillPlayableArray(currentPlateau.levelConfigBoard.levelArray);
+                fillPlayableArray(currentPlateau.levelConfigBoard.getLevelArray());
                 break;
 
             case KeyEvent.VK_LEFT:
                 System.out.println("gauche");
                 currentPlateau.moveLeft();
-                fillPlayableArray(currentPlateau.levelConfigBoard.levelArray);
+                fillPlayableArray(currentPlateau.levelConfigBoard.getLevelArray());
                 break;
 
             case KeyEvent.VK_RIGHT:
                 System.out.println("droite");
                 currentPlateau.moveRight();
-                fillPlayableArray(currentPlateau.levelConfigBoard.levelArray);
+                fillPlayableArray(currentPlateau.levelConfigBoard.getLevelArray());
                 break;
         }
     }
@@ -323,7 +323,7 @@ public class maVuePlateau extends JFrame implements KeyListener, ActionListener 
 
         } else if (result == 1) { //bouton du milieu clické
             currentPlateau.restartGame();
-            fillPlayableArray(currentPlateau.levelConfigBoard.levelArray);
+            fillPlayableArray(currentPlateau.levelConfigBoard.getLevelArray());
 
         } else if (result == 2) { //bouton de droite clické
             System.exit(0);

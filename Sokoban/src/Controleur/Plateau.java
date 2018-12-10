@@ -34,7 +34,7 @@ public class Plateau implements Cloneable {
             levelConfigBoard_saved = (LevelConfig) levelConfigBoard.clone();
         }
 
-        levelConfigBoard.setWichLevel(levelConfigBoard.wichLevel);
+        levelConfigBoard.setWichLevel(levelConfigBoard.getWichLevel());
     }
 
     public void moveUp() {
@@ -42,11 +42,11 @@ public class Plateau implements Cloneable {
         levelConfigBoard.isFinishedGame(); // on check si tous les goals on étés remplis
         int[] positionPerso = levelConfigBoard.getPersoPosition();
         int typeObjectAbovePerso = levelConfigBoard.readBoardForSpecificPlace(
-                levelConfigBoard.levelArray, (positionPerso[0] - 1), positionPerso[1]);
+                levelConfigBoard.getLevelArray(), (positionPerso[0] - 1), positionPerso[1]);
         if ((positionPerso[0] - 2) >= 0) {
             int typeObjectAboveObject =
                     levelConfigBoard.readBoardForSpecificPlace(
-                            levelConfigBoard.levelArray,
+                            levelConfigBoard.getLevelArray(),
                             (positionPerso[0] - 2),
                             positionPerso[1]);
 
@@ -66,7 +66,7 @@ public class Plateau implements Cloneable {
                         //interdit de déplacer si un mur ou une caisse est derrière
                         //si CAISSE, on se déplace: intervertion de PERSO et SOL
 
-                        if (levelConfigBoard.levelArray[(positionPerso[0] - 2)][(positionPerso[1])] == GOAL) {
+                        if (levelConfigBoard.getLevelArray()[(positionPerso[0] - 2)][(positionPerso[1])] == GOAL) {
                             //Si l'objet derrière la caisse est un BUT,
                             // alors on met la caisse sur le but puis on fixe cette caisse a jamais
                             //pour cela on modifie le  tableau localisationGoals[Y_caisse][X_caisse]
@@ -78,7 +78,7 @@ public class Plateau implements Cloneable {
 //                                    un index du tableau contenant les GOALs non-remplit
                                 // int numberofGoal = levelConfigBoard.countUncompletedGoals();
 //on remplace le GOAL par un CAISSE_PLACEE
-                                levelConfigBoard.localisationGoals.set(
+                                levelConfigBoard.getLocalisationGoals().set(
                                         indexMatchedWithLocalisationGoals,
                                         (positionPerso[0] - 2) + ";" + ((positionPerso[1]) + ";true"));
 
@@ -198,11 +198,11 @@ public class Plateau implements Cloneable {
         int[] positionPerso = levelConfigBoard.getPersoPosition();
 
         int typeObjectBelowPerso = levelConfigBoard.readBoardForSpecificPlace(
-                levelConfigBoard.levelArray, (positionPerso[0] + 1), positionPerso[1]);
+                levelConfigBoard.getLevelArray(), (positionPerso[0] + 1), positionPerso[1]);
 
         int typeObjectAboveObject =
                 levelConfigBoard.readBoardForSpecificPlace(
-                        levelConfigBoard.levelArray,
+                        levelConfigBoard.getLevelArray(),
                         (positionPerso[0] + 2),
                         positionPerso[1]);
         if ((positionPerso[0] > 0) && (positionPerso[0] + 1 > 0)) { // if Perso on the gameboard and the case above too
@@ -226,7 +226,7 @@ public class Plateau implements Cloneable {
                         //interdit de déplacer si un mur ou une caisse est derrière
                         //si CAISSE, on se déplace: intervertion de PERSO et SOL
 
-                        if (levelConfigBoard.levelArray[(positionPerso[0] + 2)][(positionPerso[1])] == GOAL) {
+                        if (levelConfigBoard.getLevelArray()[(positionPerso[0] + 2)][(positionPerso[1])] == GOAL) {
                             //Si l'objet derrière la caisse est un BUT,
                             // alors on met la caisse sur le but puis on fixe cette caisse a jamais
                             //pour cela on modifie le  tableau localisationGoals[Y_caisse][X_caisse]
@@ -237,7 +237,7 @@ public class Plateau implements Cloneable {
                             if (indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
 //on remplace le GOAL par un CAISSE_PLACEE
-                                levelConfigBoard.localisationGoals.set(
+                                levelConfigBoard.getLocalisationGoals().set(
                                         indexMatchedWithLocalisationGoals,
                                         (positionPerso[0] + 2) + ";" + ((positionPerso[1]) + ";true"));
 
@@ -286,11 +286,11 @@ public class Plateau implements Cloneable {
         int[] positionPerso = levelConfigBoard.getPersoPosition();
 
         int typeObjectLeftPerso = levelConfigBoard.readBoardForSpecificPlace(
-                levelConfigBoard.levelArray, (positionPerso[0]), positionPerso[1] - 1);
+                levelConfigBoard.getLevelArray(), (positionPerso[0]), positionPerso[1] - 1);
 
         int typeObjectAboveObject =
                 levelConfigBoard.readBoardForSpecificPlace(
-                        levelConfigBoard.levelArray,
+                        levelConfigBoard.getLevelArray(),
                         (positionPerso[0]),
                         positionPerso[1] - 2);
         if ((positionPerso[1] > 0) && (positionPerso[1] - 1 > 0)) { // if Perso on the gameboard and the case above too
@@ -314,7 +314,7 @@ public class Plateau implements Cloneable {
                         //interdit de déplacer si un mur ou une caisse est derrière
                         //si CAISSE, on se déplace: intervertion de PERSO et SOL
 
-                        if (levelConfigBoard.levelArray[(positionPerso[0])][(positionPerso[1] - 2)] == GOAL) {
+                        if (levelConfigBoard.getLevelArray()[(positionPerso[0])][(positionPerso[1] - 2)] == GOAL) {
                             //Si l'objet derrière la caisse est un BUT,
                             // alors on met la caisse sur le but puis on fixe cette caisse a jamais
                             //pour cela on modifie le  tableau localisationGoals[Y_caisse][X_caisse]
@@ -326,7 +326,7 @@ public class Plateau implements Cloneable {
                             if (indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
 //on remplace le GOAL par un CAISSE_PLACEE
-                                levelConfigBoard.localisationGoals.set(
+                                levelConfigBoard.getLocalisationGoals().set(
                                         indexMatchedWithLocalisationGoals,
                                         (positionPerso[0]) + ";" + ((positionPerso[1] - 2) + ";true"));
 
@@ -432,11 +432,11 @@ public class Plateau implements Cloneable {
         int[] positionPerso = levelConfigBoard.getPersoPosition();
 
         int typeObjectLeftPerso = levelConfigBoard.readBoardForSpecificPlace(
-                levelConfigBoard.levelArray, (positionPerso[0]), positionPerso[1] + 1);
+                levelConfigBoard.getLevelArray(), (positionPerso[0]), positionPerso[1] + 1);
 
         int typeObjectAboveObject =
                 levelConfigBoard.readBoardForSpecificPlace(
-                        levelConfigBoard.levelArray,
+                        levelConfigBoard.getLevelArray(),
                         (positionPerso[0]),
                         positionPerso[1] + 2);
 
@@ -461,7 +461,7 @@ public class Plateau implements Cloneable {
                         //interdit de déplacer si un mur ou une caisse est derrière
                         //si CAISSE, on se déplace: intervertion de PERSO et SOL
 
-                        if (levelConfigBoard.levelArray[(positionPerso[0])][(positionPerso[1] + 2)] == GOAL) {
+                        if (levelConfigBoard.getLevelArray()[(positionPerso[0])][(positionPerso[1] + 2)] == GOAL) {
                             //Si l'objet derrière la caisse est un BUT,
                             // alors on met la caisse sur le but puis on fixe cette caisse a jamais
                             //pour cela on modifie le  tableau localisationGoals[Y_caisse][X_caisse]
@@ -473,7 +473,7 @@ public class Plateau implements Cloneable {
                             if (indexMatchedWithLocalisationGoals >= 0) { // si le nombre correspond a
 //                                    un index du tableau contenant les GOALs non-remplit
 //on remplace le GOAL par un CAISSE_PLACEE
-                                levelConfigBoard.localisationGoals.set(
+                                levelConfigBoard.getLocalisationGoals().set(
                                         indexMatchedWithLocalisationGoals,
                                         (positionPerso[0]) + ";" + ((positionPerso[1] + 2) + ";true"));
 
@@ -608,7 +608,7 @@ public class Plateau implements Cloneable {
     public void showBoardInConsole(boolean isConsoleMode) {
 
         if (isConsoleMode) {
-            int[][] tempArray = levelConfigBoard.levelArray;
+            int[][] tempArray = levelConfigBoard.getLevelArray();
             for (int i = 0; i < tempArray.length; i++) {
                 for (int j = 0; j < tempArray[i].length; j++) {
                 }
@@ -636,14 +636,14 @@ public class Plateau implements Cloneable {
         levelConfigBoard.isPersoExist = false;
 
 //on clone le tableau sauvegardé au lancement du jeu. On le réinjecte dans le tableau qui sert de plateau
-        for (int i = 0; i < levelConfigBoard.savedBasePlateau.length; i++) {
-            for (int j = 0; j < levelConfigBoard.savedBasePlateau[i].length; j++) {
-                levelConfigBoard.levelArray[i][j] = levelConfigBoard.savedBasePlateau[i][j];
+        for (int i = 0; i < levelConfigBoard.getSavedBasePlateau().length; i++) {
+            for (int j = 0; j < levelConfigBoard.getSavedBasePlateau()[i].length; j++) {
+                levelConfigBoard.getLevelArray()[i][j] = levelConfigBoard.getSavedBasePlateau()[i][j];
             }
         }
 
 
-        levelConfigBoard.localisationGoals = (ArrayList<String>) levelConfigBoard.savedLocalisationGoals.clone();
+        levelConfigBoard.setLocalisationGoals((ArrayList<String>) levelConfigBoard.getSavedLocalisationGoals().clone());
 
     }
 
