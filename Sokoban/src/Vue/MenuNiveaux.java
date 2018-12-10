@@ -16,7 +16,6 @@ import javax.swing.filechooser.FileSystemView;
 public class MenuNiveaux {
 
     maVuePlateau aze;
-    boolean isAlreadyABoardLoaded;
 
     public MenuNiveaux() {
 
@@ -39,16 +38,11 @@ public class MenuNiveaux {
         JButton Quitter = new JButton("Quitter");
 
 
-
-
         //Lancer.setSize(500, 500);
 
 
-
-
-
         p.add(combo);
-       // p.add(displayList);
+        // p.add(displayList);
         p.add(Lancer);
 
         Lancer.setBounds(60, 400, 220, 30);
@@ -56,7 +50,6 @@ public class MenuNiveaux {
         p.add(Quitter);
 
         f.add(p);
-
 
 
         if (displayList == null) {
@@ -74,15 +67,16 @@ public class MenuNiveaux {
             //f.add(new JScrollPane(displayList));
 
 
-          // displayList.addListSelectionListener(new ListSelectionListener() {
-          Lancer.addActionListener(new ActionListener() {
+            // displayList.addListSelectionListener(new ListSelectionListener() {
+            Lancer.addActionListener(new ActionListener() {
 
 
                 @Override
-               // public void valueChanged(ListSelectionEvent e){
-               public void actionPerformed(ActionEvent e) {
-                    //String oneFile = displayList.getSelectedValue().toString().replace("\\", "/");
-                   String oneFile = combo.getSelectedItem().toString().replace("\\", "/");
+                // public void valueChanged(ListSelectionEvent e){
+                public void actionPerformed(ActionEvent e) {
+
+                    String oneFile = combo.getSelectedItem().toString().replace("\\", "/");
+
                     //on découpe le chemin dès autour du mot "level" car chaque plateau a un nom du type "level.txt"
                     String[] parseFilePath = oneFile.split("level");
                     String numberOfTheLevelWithFileExtension = parseFilePath[parseFilePath.length - 1];
@@ -92,52 +86,55 @@ public class MenuNiveaux {
                                     (0, numberOfTheLevelWithFileExtension.length() - 4));
 
 
-                    System.out.print("Niveau " + numberOfTheLevel);
+                    System.out.print("ici: " + oneFile);
                     //si aucune vue n'a déjà été créée, alors on peut en créer une
-                    if (!isAlreadyABoardLoaded) {
-                        LevelConfig currentLevel = new LevelConfig("./Sokoban/lvl/"+ oneFile);
-                        Plateau currentPlateau = new Plateau(currentLevel); // on choisira le niveau qu'on veut (ici le 1)
 
-                        if (Main.consoleMode) {
-                            currentPlateau.showBoardInConsole(Main.consoleMode);
+                    LevelConfig currentLevel = new LevelConfig("./Sokoban/lvl/" + oneFile);
+                    Plateau currentPlateau = new Plateau(currentLevel, false); // on choisira le niveau qu'on veut (ici le 1)
 
-                            for (int i = 0; i < 1000; i++) {
-                                System.out.println("You can move with ZQSD keys");
-                                Scanner scanner = new Scanner(System.in);
-                                String chaineLue = scanner.next();
+                    if (Main.consoleMode) {
+                        currentPlateau.showBoardInConsole(Main.consoleMode);
 
-                                if (chaineLue.length() <= 0) {
-                                    System.out.println("Please choose a direction !!!");
-                                } else if (chaineLue.length() == 1) {
-                                    currentPlateau.deplacementPerso(chaineLue);
-                                } else {
-                                    System.out.println("Unable to have several directions for an unique move !!!");
-                                }
+                        for (int i = 0; i < 1000; i++) {
+                            System.out.println("You can move with ZQSD keys");
+                            Scanner scanner = new Scanner(System.in);
+                            String chaineLue = scanner.next();
+
+                            if (chaineLue.length() <= 0) {
+                                System.out.println("Please choose a direction !!!");
+                            } else if (chaineLue.length() == 1) {
+                                currentPlateau.deplacementPerso(chaineLue);
+                            } else {
+                                System.out.println("Unable to have several directions for an unique move !!!");
                             }
-                            isAlreadyABoardLoaded = true;
-
-                        } else {
-                            aze = new maVuePlateau(currentPlateau);
-                            aze.setNumberOfFirstLevelOnLaunched(numberOfTheLevel);
-                            aze.setPathOfFirstLevelLaunched(oneFile);
-
-
-                            //quand une vue est créée, on bascule la variable pour ne pas en charger d'autres
-                            //sinon il y a plusieurs jeux en même temps !!
-                            isAlreadyABoardLoaded = true;
-                            //listener qui écoute la fermture de la vue: alors on basculera la variable pour autoriser
-                            // la création d'une nouvelle vue de plateau
-                            WindowListener l = new WindowAdapter() {
-                                public void windowClosing(WindowEvent e) {
-                                    isAlreadyABoardLoaded = false;
-                                }
-                            };
-                            aze.addWindowListener(l);
-//                    Controleur.Main.consoleMode = true; // force l'affichage de la console même en mode Graphique, très utile pour débug
                         }
+
+                    } else {
+                        aze = new maVuePlateau(currentPlateau, false, 0);
+                        aze.setNumberOfFirstLevelOnLaunched(numberOfTheLevel);
+                        aze.setPathOfFirstLevelLaunched("./Sokoban/lvl/" + oneFile);
+
+
+                        //quand une vue est créée, on bascule la variable pour ne pas en charger d'autres
+                        //sinon il y a plusieurs jeux en même temps !!
+                        //listener qui écoute la fermture de la vue: alors on basculera la variable pour autoriser
+                        // la création d'une nouvelle vue de plateau
+                        WindowListener l = new WindowAdapter() {
+                            public void windowClosing(WindowEvent e) {
+                            }
+                        };
+                        aze.addWindowListener(l);
+//                            aze.addComponentListener();
+//                    Controler.Main.consoleMode = true; // force l'affichage de la console même en mode Graphique, très utile pour débug
+
                     }
 
+                    //une instance existe de Vue.maVuePlateau existe déjà
+                    System.out.println("on va voir ça: " + aze.pathOfFirstLevelLaunched);
+
+
 //                System.out.println("sélectionné: " + oneFile);
+                    return;
                 }
             });
 
@@ -236,30 +233,30 @@ public class MenuNiveaux {
 //        });
 //    }
     }
-        private static class MyCellRenderer extends DefaultListCellRenderer {
 
-            private static final long serialVersionUID = 1L;
+    private static class MyCellRenderer extends DefaultListCellRenderer {
 
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value,
-                                                          int index, boolean isSelected, boolean cellHasFocus) {
-                if (value instanceof File) {
-                    File file = (File) value;
-                    setText(file.getName());
-                    setIcon(FileSystemView.getFileSystemView().getSystemIcon(file));
-                    if (isSelected) {
-                        setBackground(list.getSelectionBackground());
-                        setForeground(list.getSelectionForeground());
-                    } else {
-                        setBackground(list.getBackground());
-                        setForeground(list.getForeground());
-                    }
-                    setEnabled(list.isEnabled());
-                    setFont(list.getFont());
-                    setOpaque(true);
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value,
+                                                      int index, boolean isSelected, boolean cellHasFocus) {
+            if (value instanceof File) {
+                File file = (File) value;
+                setText(file.getName());
+                setIcon(FileSystemView.getFileSystemView().getSystemIcon(file));
+                if (isSelected) {
+                    setBackground(list.getSelectionBackground());
+                    setForeground(list.getSelectionForeground());
+                } else {
+                    setBackground(list.getBackground());
+                    setForeground(list.getForeground());
                 }
-                return this;
+                setEnabled(list.isEnabled());
+                setFont(list.getFont());
+                setOpaque(true);
             }
+            return this;
         }
     }
-
+}

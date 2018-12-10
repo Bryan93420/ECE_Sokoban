@@ -130,6 +130,7 @@ public class LevelConfig implements Cloneable{
         limLines = countFileSizes.size() ;
 
         for ( int i = 0; i < countFileSizes.size() ; i++){
+
             if(countFileSizes.get(0) !=  countFileSizes.get(i)){
                 System.out.print("Execution STOPPED because file source has inequals columns size\n");
                 //stop the app because file source as inequals columns size

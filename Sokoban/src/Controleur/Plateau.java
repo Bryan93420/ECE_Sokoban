@@ -1,17 +1,19 @@
 package Controleur;
 
 import Modele.LevelConfig;
+import Modele.StopWatchRunner;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Plateau  {
+public class Plateau implements Cloneable {
 
-    public LevelConfig levelConfigBoard;
+    public LevelConfig levelConfigBoard, levelConfigBoard_saved;
     private int nbPas;
     private int nbPousses;
     public boolean fin_partie = false;
 
+    public StopWatchRunner watch;
 
     public static final int SOL = 0;
     public static final int MUR = 1;
@@ -22,12 +24,24 @@ public class Plateau  {
     public static final int PERSO_GOAL = 6;
 
 
-    public Plateau( LevelConfig myBoard) {
+    public Plateau(LevelConfig myBoard, boolean needACloneOfFisrtInstance) {
 
-        levelConfigBoard = myBoard;
+        if(needACloneOfFisrtInstance){
+            // si on True, alors c'est qu'on a souhaité relancé la partie
+            //donc on repart avec l'object cloné au 1er lancement
+            levelConfigBoard = (LevelConfig) myBoard.clone();
+            levelConfigBoard_saved = (LevelConfig) myBoard.clone();
+        }
+        else {
+            levelConfigBoard = myBoard;
+            levelConfigBoard_saved = (LevelConfig) levelConfigBoard.clone();
+        }
+
+        System.out.println(levelConfigBoard + " et " + levelConfigBoard_saved);
+
 //        levelConfigBoard.wichLevel = a;
         levelConfigBoard.setWichLevel(levelConfigBoard.wichLevel);
-//        levelGamePlate = new Modele.LevelConfig();
+//        levelGamePlate = new LevelConfig();
         System.out.println("sélectionné la: " + levelConfigBoard.wichLevel);
 
     }
@@ -689,6 +703,9 @@ public class Plateau  {
 
     public void restartGame() throws IOException {
 
+        watch.timer.stop();
+        watch.timer.reset();
+        watch.timer.start();
         fin_partie = false;
         setNbPas(0);
         setNbPousses(0);
@@ -705,5 +722,22 @@ public class Plateau  {
 
         levelConfigBoard.localisationGoals = (ArrayList<String>) levelConfigBoard.savedLocalisationGoals.clone();
 
+    }
+
+
+
+    public Object clone() {
+        Object o = null;
+        try {
+            // On récupère l'instance à renvoyer par l'appel de la
+            // méthode super.clone()
+            o = super.clone();
+        } catch(CloneNotSupportedException cnse) {
+            // Ne devrait jamais arriver car nous implémentons
+            // l'interface Cloneable
+            cnse.printStackTrace(System.err);
+        }
+        // on renvoie le clone
+        return o;
     }
 }
